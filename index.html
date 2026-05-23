@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repo Security Mini-Audit - INR 499</title>
+  <meta name="description" content="A safe passive security review for one GitHub repo or app folder. INR 499, UPI after preview approval.">
+  <meta property="og:title" content="Repo Security Mini-Audit - INR 499">
+  <meta property="og:description" content="Dependency, secret pattern, GitHub Actions, SECURITY.md, and Dependabot checks for repos you own or have permission to share.">
+  <meta property="og:image" content="repo-security-499-share-card.png">
+  <meta name="theme-color" content="#101820">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111a22;
+      --muted: #536474;
+      --line: #c9d4dc;
+      --paper: #f7faf8;
+      --white: #ffffff;
+      --green: #05844f;
+      --green-dark: #03613d;
+      --blue: #d8ebf7;
+      --peach: #ffe6d8;
+      --dark: #101820;
+      --shadow: 0 18px 52px rgba(17, 26, 34, 0.14);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 84svh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: 2px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(247, 250, 248, 0.98) 0%, rgba(247, 250, 248, 0.9) 44%, rgba(247, 250, 248, 0.54) 100%),
+        url("repo-security-499-share-card.png") right center / min(56vw, 680px) auto no-repeat,
+        linear-gradient(135deg, #e7f3ec 0%, #d9ecfb 62%, #ffe0d1 100%);
+    }
+
+    .hero-inner,
+    .section-inner {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 8px 10px;
+      border: 2px solid var(--dark);
+      background: rgba(255, 255, 255, 0.74);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: 0.88;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: #344657;
+      font-size: clamp(19px, 2.2vw, 28px);
+      line-height: 1.2;
+      font-weight: 780;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border: 2px solid var(--dark);
+      border-radius: 4px;
+      background: var(--dark);
+      color: var(--white);
+      font-weight: 920;
+      text-decoration: none;
+      box-shadow: 5px 5px 0 rgba(16, 24, 32, 0.12);
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: var(--white);
+      color: var(--dark);
+    }
+
+    .button.green {
+      background: var(--green);
+    }
+
+    .proof-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 34px;
+      max-width: 850px;
+    }
+
+    .proof-item {
+      min-height: 74px;
+      padding: 12px;
+      border: 2px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      font-weight: 880;
+      line-height: 1.12;
+    }
+
+    .proof-item strong {
+      display: block;
+      color: var(--green);
+      font-size: 22px;
+    }
+
+    section {
+      padding: 54px 0;
+    }
+
+    .band-blue {
+      background: linear-gradient(135deg, #f7faf8 0%, var(--blue) 100%);
+      border-bottom: 2px solid var(--line);
+    }
+
+    .band-peach {
+      background: linear-gradient(135deg, #f7faf8 0%, var(--peach) 100%);
+      border-top: 2px solid var(--line);
+      border-bottom: 2px solid var(--line);
+    }
+
+    .section-title {
+      margin: 0 0 22px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .panel {
+      min-height: 100%;
+      padding: 20px;
+      border: 2px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .panel p,
+    .panel li {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.42;
+    }
+
+    .panel ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .sample {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      min-height: 150px;
+      padding: 18px;
+      border: 2px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .step-number {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      border: 2px solid var(--dark);
+      background: var(--green);
+      color: var(--white);
+      font-weight: 950;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+      line-height: 1.04;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 760;
+      line-height: 1.34;
+    }
+
+    .finding {
+      margin-top: 12px;
+      padding: 14px;
+      border: 2px solid #d8dde2;
+      background: var(--white);
+    }
+
+    .finding strong {
+      display: block;
+      color: var(--dark);
+      font-size: 18px;
+    }
+
+    .payment {
+      display: grid;
+      grid-template-columns: minmax(260px, 420px) 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .qr {
+      width: min(100%, 360px);
+      padding: 14px;
+      border: 2px solid var(--line);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .pay-box {
+      max-width: 610px;
+    }
+
+    .amount {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 0.9;
+      font-weight: 950;
+    }
+
+    .upi {
+      margin: 0 0 20px;
+      color: var(--green-dark);
+      font-size: clamp(22px, 3vw, 36px);
+      line-height: 1;
+      font-weight: 920;
+      overflow-wrap: anywhere;
+    }
+
+    .copybox {
+      width: 100%;
+      min-height: 160px;
+      margin-top: 14px;
+      padding: 14px;
+      border: 2px solid var(--line);
+      background: var(--white);
+      color: var(--ink);
+      font: 760 14px/1.42 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      resize: vertical;
+    }
+
+    .mini-note {
+      color: var(--muted);
+      font-weight: 760;
+      line-height: 1.45;
+    }
+
+    .footer {
+      padding: 28px 0 42px;
+      color: var(--muted);
+      font-weight: 760;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 20;
+      display: none;
+      padding: 12px 14px;
+      border: 2px solid var(--dark);
+      background: var(--dark);
+      color: var(--white);
+      font-weight: 900;
+      box-shadow: 6px 6px 0 rgba(16, 24, 32, 0.16);
+    }
+
+    .toast.visible {
+      display: block;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        min-height: 82svh;
+        align-items: flex-start;
+        padding-top: 54px;
+        background:
+          linear-gradient(180deg, rgba(247, 250, 248, 0.99) 0%, rgba(247, 250, 248, 0.93) 54%, rgba(247, 250, 248, 0.76) 100%),
+          url("repo-security-499-share-card.png") center bottom / 92vw auto no-repeat,
+          linear-gradient(135deg, #e7f3ec 0%, #d9ecfb 62%, #ffe0d1 100%);
+      }
+
+      .hero-inner,
+      .section-inner {
+        width: min(100% - 24px, 720px);
+      }
+
+      .proof-strip,
+      .grid,
+      .sample,
+      .steps,
+      .payment {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-strip {
+        gap: 8px;
+      }
+
+      .proof-item {
+        min-height: auto;
+      }
+
+      section {
+        padding: 38px 0;
+      }
+
+      .actions .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">INR 499 | Pay after preview | Passive review only</p>
+        <h1>Repo Security Mini-Audit</h1>
+        <p class="hero-copy">A safe review for one GitHub repo or app folder: dependencies, secret patterns, GitHub Actions permissions, SECURITY.md, Dependabot, and five prioritized fixes.</p>
+        <div class="actions">
+          <button class="button green" data-copy="#request-copy">Copy request message</button>
+          <a class="button secondary" href="#start">Send repo for preview</a>
+          <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample report</a>
+        </div>
+        <div class="proof-strip" aria-label="Key details">
+          <div class="proof-item"><strong>INR 499</strong>One repo or app folder</div>
+          <div class="proof-item"><strong>Preview first</strong>Pay only after scope is useful</div>
+          <div class="proof-item"><strong>No hacking</strong>No login tests or probing</div>
+          <div class="proof-item"><strong>Fast output</strong>Checklist plus fixes</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="band-blue" id="included">
+      <div class="section-inner">
+        <h2 class="section-title">What You Get</h2>
+        <div class="grid">
+          <article class="panel">
+            <h3>Dependency Risk</h3>
+            <p>Lockfile and manifest review for risky package posture, loose ranges, missing audit habits, and quick hardening wins.</p>
+          </article>
+          <article class="panel">
+            <h3>Secret Exposure Patterns</h3>
+            <p>Passive scan for common secret-like patterns without printing private values in the final report.</p>
+          </article>
+          <article class="panel">
+            <h3>GitHub Hygiene</h3>
+            <p>Actions permission posture, missing Dependabot setup, absent SECURITY.md path, and repo handoff risks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+          <article class="step">
+            <span class="step-number">1</span>
+            <h3>Send Repo</h3>
+            <p>Reply in the same WhatsApp, DM, or thread where you got this link. Share only a public repo or safe folder you own or have permission to review.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">2</span>
+            <h3>Get Preview</h3>
+            <p>I check whether the repo fits this passive mini-audit and send a small useful preview before asking for payment.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">3</span>
+            <h3>Pay UPI</h3>
+            <p>If the preview is useful, pay INR 499 to the UPI ID on this page. No OTP, UPI PIN, password, or private secret should be shared.</p>
+          </article>
+          <article class="step">
+            <span class="step-number">4</span>
+            <h3>Receive Report</h3>
+            <p>You get the final checklist with prioritized fixes after the payment is received.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-inner sample">
+        <div>
+          <h2 class="section-title">Sample Findings</h2>
+          <div class="finding">
+            <strong>Medium: No visible Dependabot configuration</strong>
+            Dependency and GitHub Actions updates are easier to miss without a regular update path.
+          </div>
+          <div class="finding">
+            <strong>Medium: Loose dependency ranges</strong>
+            Ranges such as latest can pull unexpected major versions during fresh installs.
+          </div>
+          <div class="finding">
+            <strong>Low: No visible SECURITY.md reporting path</strong>
+            A private reporting route helps responsible disclosure.
+          </div>
+        </div>
+        <article class="panel">
+          <h3>Boundary</h3>
+          <ul>
+            <li>Only repos you own or have permission to share.</li>
+            <li>No login testing, exploit attempts, scraping private data, production probing, malware, or bypass help.</li>
+            <li>No passwords, OTPs, UPI PINs, private keys, or real secrets should be shared.</li>
+            <li>This is a practical checklist, not a penetration test or certification.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="band-peach" id="payment">
+      <div class="section-inner payment">
+        <img class="qr" src="repo-security-499-upi-qr.png" alt="UPI QR for sajidofaspire@oksbi">
+        <div class="pay-box">
+          <h2 class="section-title">Pay After Preview</h2>
+          <p class="amount">INR 499</p>
+          <p class="upi">sajidofaspire@oksbi</p>
+          <p class="mini-note">Payment is requested after I confirm the repo is safe to review and send a useful preview. Final checklist/report is delivered after successful payment is received.</p>
+          <div class="actions">
+            <a class="button green" href="upi://pay?pa=sajidofaspire@oksbi&pn=Sajid&am=499&cu=INR&tn=Repo%20Security%20Mini%20Audit">Open UPI app</a>
+            <button class="button secondary" data-copy="#payment-copy">Copy payment note</button>
+            <a class="button secondary" href="repo-security-499-payment-card.png">Payment card</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="start">
+      <div class="section-inner">
+        <h2 class="section-title">Start With This Message</h2>
+        <p class="mini-note">Copy this and reply in the WhatsApp, DM, or thread where you received this link.</p>
+        <textarea id="request-copy" class="copybox" readonly>Hi Sajid, I want the INR 499 Repo Security Mini-Audit.
+
+Repo link:
+I own this repo or have permission to request a review.
+
+Passive review only is okay. Please send the preview first.</textarea>
+        <textarea id="payment-copy" class="copybox" readonly>This fits the INR 499 Repo Security Mini-Audit slot.
+
+UPI ID: sajidofaspire@oksbi
+Amount: INR 499
+Note: Repo Security Mini Audit
+
+Once payment is received, I will send the final checklist/report.</textarea>
+        <div class="actions">
+          <button class="button" data-copy="#request-copy">Copy request</button>
+          <button class="button secondary" data-copy="#payment-copy">Copy payment note</button>
+          <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample preview</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="section-inner">Repo Security Mini-Audit. Safe passive review for repos you own or have permission to share.</div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script>
+    const toast = document.querySelector("#toast");
+    let toastTimer;
+
+    async function copyFromSelector(selector) {
+      const target = document.querySelector(selector);
+      if (!target) return;
+      const text = "value" in target ? target.value : target.textContent;
+      await navigator.clipboard.writeText(text.trim());
+      toast.classList.add("visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("visible"), 1400);
+    }
+
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", () => copyFromSelector(button.dataset.copy));
+    });
+  </script>
+</body>
+</html>

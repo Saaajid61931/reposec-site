@@ -1,0 +1,16 @@
+Do you have a public GitHub repo or small app repo you want checked quickly?
+
+I am doing one Repo Security Mini-Audit today for INR 499.
+
+I can send a safe preview first. Final checklist/report after UPI payment.
+
+I will review:
+- dependency and lockfile risk
+- exposed-secret patterns
+- GitHub Actions permissions
+- missing SECURITY.md / Dependabot setup
+- 5 prioritized hardening fixes
+
+Only for repos you own or have permission to share. No hacking, no login testing, no production probing.
+
+Reply REPO with the repo link.
