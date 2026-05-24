@@ -343,6 +343,9 @@
           <option value="warm">Warm WhatsApp / DM</option>
           <option value="founder">Founder / Freelancer</option>
           <option value="student">Student / Beginner Developer</option>
+          <option value="actions">GitHub Actions Angle</option>
+          <option value="ask">Ask If They Have A Repo</option>
+          <option value="permission">Permission-First Group Post</option>
           <option value="public">Public Post</option>
           <option value="repo">Reply When They Say REPO</option>
           <option value="payment">Payment Close</option>
@@ -477,6 +480,35 @@ Request form: ${requestUrl}
 INR 499. I check dependency risk, secret-like patterns, GitHub Actions permissions, missing SECURITY.md/Dependabot, and give 5 fixes.
 
 No hacking or login testing. Passive review only. Preview first, final report after UPI.`,
+        actions: `Quick one: if you have a repo using GitHub Actions, I can do a passive mini-audit focused on workflow permissions and repo hygiene.
+
+Details: ${url}
+Request form: ${requestUrl}
+
+INR 499 for one repo/app folder. I check dependency risk, accidental secret patterns, GitHub Actions permission posture, SECURITY.md/Dependabot gaps, and 5 prioritized fixes.
+
+Preview first. Final checklist/report after UPI payment.
+
+Only repos you own or have permission to share. No login testing or production probing.`,
+        ask: `Quick question: do you currently have a public GitHub repo or app folder for your site/project?
+
+I am doing one INR 499 Repo Security Mini-Audit today:
+${url}
+
+Request form:
+${requestUrl}
+
+It is a passive review only: dependency posture, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot basics, and 5 prioritized fixes.
+
+Preview first. Final report after UPI payment.`,
+        permission: `Can I share a small paid dev-help slot here?
+
+I am doing one INR 499 Repo Security Mini-Audit today for a GitHub repo/app folder the owner has permission to submit.
+
+Details: ${url}
+Request form: ${requestUrl}
+
+Passive review only: dependencies, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot, and 5 fixes. No hacking, no login testing, no production probing.`,
         public: `Doing one INR 499 Repo Security Mini-Audit today.
 
 For one GitHub repo/app folder you own or have permission to share:
@@ -509,6 +541,21 @@ Once payment is received, I will send the final checklist/report.`,
 I can only do a passive review for a repo you own or have permission to share.`
       };
       return templates[name] || templates.warm;
+    }
+
+    function templateForLead(index) {
+      const [segment, channel, nextAction] = leads[index];
+      const text = `${segment} ${channel} ${nextAction}`.toLowerCase();
+      if (text.includes("github actions")) return "actions";
+      if (text.includes("student") || text.includes("bootcamp")) return "student";
+      if (text.includes("founder") || text.includes("freelancer") || text.includes("agency") || text.includes("client")) return "founder";
+      if (text.includes("group") || text.includes("club") || text.includes("post only") || text.includes("ask permission")) return "permission";
+      if (text.includes("wordpress") || text.includes("site owner")) return "ask";
+      return "warm";
+    }
+
+    function textForLead(index) {
+      return textForTemplate(templateForLead(index));
     }
 
     function showToast(text = "Copied") {
@@ -563,7 +610,8 @@ I can only do a passive review for a repo you own or have permission to share.`
             <label class="check"><input type="checkbox" data-index="${index}" data-field="paid" ${item.paid ? "checked" : ""}> Paid</label>
           </div>
           <div class="button-row">
-            <button class="secondary" data-lead-template="${index}">Copy</button>
+            <button class="secondary" data-lead-template="${index}">Copy Tailored</button>
+            <button class="green" data-lead-whatsapp="${index}">WhatsApp</button>
           </div>
         `;
         leadGrid.appendChild(card);
@@ -633,7 +681,16 @@ I can only do a passive review for a repo you own or have permission to share.`
     leadGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-lead-template]");
       if (!button) return;
-      copyText(messageBox.value, "Lead message copied");
+      const index = Number(button.dataset.leadTemplate);
+      copyText(textForLead(index), "Tailored message copied");
+    });
+
+    leadGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-lead-whatsapp]");
+      if (!button) return;
+      const index = Number(button.dataset.leadWhatsapp);
+      const text = textForLead(index);
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
     });
   </script>
 </body>
