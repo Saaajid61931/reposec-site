@@ -1,5 +1,8 @@
 Do you have a public GitHub repo or small app repo you want checked quickly?
 
+Details: https://reposec.site
+Request form: https://github.com/Saaajid61931/reposec-site/issues/new?title=Repo%20Security%20Mini-Audit%20request&body=Repo%20link%3A%0A%0AI%20own%20this%20repo%20or%20have%20permission%20to%20request%20a%20passive%20review.%0A%0APassive%20review%20only%20is%20okay.%20Please%20send%20the%20preview%20first.%0A%0AI%20understand%20the%20final%20report%20is%20INR%20499%20after%20preview%20approval.
+
 I am doing one Repo Security Mini-Audit today for INR 499.
 
 I can send a safe preview first. Final checklist/report after UPI payment.
@@ -13,4 +16,4 @@ I will review:
 
 Only for repos you own or have permission to share. No hacking, no login testing, no production probing.
 
-Reply REPO with the repo link.
+Reply REPO with the repo link, or submit it through the request form.

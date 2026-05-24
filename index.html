@@ -320,6 +320,24 @@
       line-height: 1.45;
     }
 
+    .intake-box {
+      margin: 18px 0 8px;
+      padding: 18px;
+      border: 2px solid var(--dark);
+      border-radius: 6px;
+      background: rgba(216, 235, 247, 0.62);
+    }
+
+    .intake-box h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.05;
+    }
+
+    .intake-box p {
+      margin: 0;
+    }
+
     .footer {
       padding: 28px 0 42px;
       color: var(--muted);
@@ -394,7 +412,7 @@
         <h1>Repo Security Mini-Audit</h1>
         <p class="hero-copy">A safe review for one GitHub repo or app folder: dependencies, secret patterns, GitHub Actions permissions, SECURITY.md, Dependabot, and five prioritized fixes.</p>
         <div class="actions">
-          <button class="button green" data-copy="#request-copy">Copy request message</button>
+          <a class="button green" href="request.html">Request preview</a>
           <a class="button secondary" href="#start">Send repo for preview</a>
           <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample report</a>
         </div>
@@ -434,7 +452,7 @@
           <article class="step">
             <span class="step-number">1</span>
             <h3>Send Repo</h3>
-            <p>Reply in the same WhatsApp, DM, or thread where you got this link. Share only a public repo or safe folder you own or have permission to review.</p>
+            <p>Reply in the same WhatsApp, DM, or thread where you got this link, or open the GitHub intake. Share only a public repo or safe folder you own or have permission to review.</p>
           </article>
           <article class="step">
             <span class="step-number">2</span>
@@ -504,7 +522,14 @@
     <section id="start">
       <div class="section-inner">
         <h2 class="section-title">Start With This Message</h2>
-        <p class="mini-note">Copy this and reply in the WhatsApp, DM, or thread where you received this link.</p>
+        <p class="mini-note">For public visitors, open the GitHub intake. For warm WhatsApp/DM leads, copy the message and reply in the same chat where you received this link.</p>
+        <div class="intake-box">
+          <h3>Fastest public request</h3>
+          <p class="mini-note">Create a GitHub issue with your repo link and permission confirmation. I will reply with a passive preview before asking for payment.</p>
+          <div class="actions">
+            <a class="button green" href="request.html">Open GitHub intake</a>
+          </div>
+        </div>
         <textarea id="request-copy" class="copybox" readonly>Hi Sajid, I want the INR 499 Repo Security Mini-Audit.
 
 Repo link:
@@ -520,6 +545,7 @@ Note: Repo Security Mini Audit
 Once payment is received, I will send the final checklist/report.</textarea>
         <div class="actions">
           <button class="button" data-copy="#request-copy">Copy request</button>
+          <a class="button green" href="request.html">Open intake</a>
           <button class="button secondary" data-copy="#payment-copy">Copy payment note</button>
           <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample preview</a>
         </div>
