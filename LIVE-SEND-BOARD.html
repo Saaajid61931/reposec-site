@@ -347,6 +347,12 @@
           <option value="ask">Ask If They Have A Repo</option>
           <option value="permission">Permission-First Group Post</option>
           <option value="public">Public Post</option>
+          <option value="follow2h">Follow-Up: 2 Hours</option>
+          <option value="followEvening">Follow-Up: Same Evening</option>
+          <option value="followNextDay">Follow-Up: Next Day</option>
+          <option value="safe">Reply: Is This Safe?</option>
+          <option value="sample">Reply: Sample Report</option>
+          <option value="free">Reply: Free Full Report</option>
           <option value="repo">Reply When They Say REPO</option>
           <option value="payment">Payment Close</option>
           <option value="refusal">Safety Refusal</option>
@@ -522,6 +528,40 @@ Preview first. Final checklist after UPI payment.
 
 ${url}
 Request form: ${requestUrl}`,
+        follow2h: `Small bump on this.
+
+If you have even one public GitHub repo, I can do the passive preview first and you can decide after seeing whether it is useful:
+${url}
+
+Request form:
+${requestUrl}`,
+        followEvening: `I am keeping one INR 499 Repo Security Mini-Audit slot open today.
+
+If you send a repo you own or are allowed to share, I will check whether it fits and send a tiny preview first. No login testing, no production probing.
+
+${url}
+Request form: ${requestUrl}`,
+        followNextDay: `Last follow-up on this from me.
+
+If you do not need the repo check, no issue. If you know one dev/founder/student with a GitHub project, you can forward this:
+${url}
+
+Request form:
+${requestUrl}
+
+I am doing the first useful preview before asking for UPI.`,
+        safe: `Yes. It is passive only.
+
+I will not log in, run attacks, probe production, bypass access, or ask for passwords/OTP/UPI PIN/private keys.
+
+I only review repo files/configs you own or have permission to share.`,
+        sample: `Sample preview is here:
+${url.replace(/\/+$/, "")}/repo-security-499-demo-buyer-preview.md
+
+The final report is customized to your repo after the preview/payment flow.`,
+        free: `I can send the short preview free.
+
+The full prioritized checklist/report is the paid INR 499 part after you approve the preview.`,
         repo: `Great. Please confirm:
 
 1. You own this repo or have permission to request a review.
