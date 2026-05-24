@@ -328,9 +328,10 @@
         <div class="button-row">
           <button class="green" id="save-url">Save URL</button>
           <a class="button secondary" href="index.html">Open Page</a>
+          <a class="button secondary" href="request.html">Request Form</a>
           <a class="button secondary" href="repo-security-499-share-card.png">Share Card</a>
         </div>
-        <p class="mini" style="margin-top:12px;">For the free GitHub Pages route, replace the default domain with the URL shown in GitHub Pages settings.</p>
+        <p class="mini" style="margin-top:12px;">Use the request form for public visitors who are not already replying in your DM thread.</p>
       </section>
     </header>
 
@@ -442,11 +443,14 @@
 
     function textForTemplate(name) {
       const url = state.url || "https://reposec.site";
+      const requestUrl = `${url.replace(/\/+$/, "")}/request.html`;
       const templates = {
         warm: `Do you have a public GitHub repo or small app repo you want checked quickly?
 
 I made a small page for the INR 499 Repo Security Mini-Audit:
 ${url}
+Request form:
+${requestUrl}
 
 I can safely review dependency risk, exposed-secret patterns, GitHub Actions permissions, missing SECURITY.md / Dependabot setup, and 5 prioritized hardening fixes.
 
@@ -454,10 +458,11 @@ Only for repos you own or have permission to share. No hacking, no login testing
 
 I can send a small preview first. Final checklist/report after UPI payment.
 
-Reply REPO with the repo link.`,
+Reply REPO with the repo link, or submit it through the request form.`,
         founder: `Quick one: before you hand a repo to a client or launch it, I can do a small passive security hygiene check.
 
 Details: ${url}
+Request form: ${requestUrl}
 
 INR 499 for one GitHub repo/app folder. I check dependency posture, accidental secret patterns, GitHub Actions permissions, SECURITY.md/Dependabot gaps, and send 5 prioritized fixes.
 
@@ -467,6 +472,7 @@ Only repos you own or have permission to share.`,
         student: `If you have a GitHub project you plan to share for internships, college, or clients, I can do a quick repo security hygiene review.
 
 Page: ${url}
+Request form: ${requestUrl}
 
 INR 499. I check dependency risk, secret-like patterns, GitHub Actions permissions, missing SECURITY.md/Dependabot, and give 5 fixes.
 
@@ -482,7 +488,8 @@ For one GitHub repo/app folder you own or have permission to share:
 
 Preview first. Final checklist after UPI payment.
 
-${url}`,
+${url}
+Request form: ${requestUrl}`,
         repo: `Great. Please confirm:
 
 1. You own this repo or have permission to request a review.
