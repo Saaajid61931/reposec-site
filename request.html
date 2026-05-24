@@ -3,62 +3,198 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=https://github.com/Saaajid61931/reposec-site/issues/new?title=Repo%20Security%20Mini-Audit%20request&body=Repo%20link%3A%0A%0AI%20own%20this%20repo%20or%20have%20permission%20to%20request%20a%20passive%20review.%0A%0APassive%20review%20only%20is%20okay.%20Please%20send%20the%20preview%20first.%0A%0AI%20understand%20the%20final%20report%20is%20INR%20499%20after%20preview%20approval.">
-  <title>Request Repo Security Mini-Audit</title>
+  <title>Request Repo Security Mini-Audit Preview</title>
   <style>
+    :root {
+      color-scheme: light;
+      --ink: #111a22;
+      --muted: #536474;
+      --green: #05844f;
+      --line: #c9d4dc;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100svh;
       display: grid;
       place-items: center;
-      background: #f7faf8;
-      color: #111a22;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f7faf8 0%, #d8ebf7 100%);
+      color: var(--ink);
     }
 
     main {
-      width: min(560px, calc(100% - 32px));
+      width: min(640px, calc(100% - 32px));
       padding: 28px;
-      border: 2px solid #111a22;
+      border: 2px solid var(--ink);
       background: #ffffff;
       box-shadow: 8px 8px 0 rgba(16, 24, 32, 0.12);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      margin: 0 0 14px;
+      padding: 7px 9px;
+      border: 2px solid var(--ink);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 920;
+      letter-spacing: 0;
+      text-transform: uppercase;
     }
 
     h1 {
       margin: 0 0 12px;
       font-size: clamp(32px, 7vw, 54px);
       line-height: 0.95;
+      letter-spacing: 0;
     }
 
     p {
-      color: #536474;
+      color: var(--muted);
       font-size: 17px;
       font-weight: 760;
       line-height: 1.45;
     }
 
-    a {
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    a,
+    button {
       display: inline-flex;
       min-height: 48px;
       align-items: center;
       justify-content: center;
-      margin-top: 10px;
       padding: 13px 18px;
-      border: 2px solid #111a22;
+      border: 2px solid var(--ink);
       border-radius: 4px;
-      background: #05844f;
+      background: var(--green);
       color: #ffffff;
-      font-weight: 920;
+      font: 920 15px/1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       text-decoration: none;
       box-shadow: 5px 5px 0 rgba(16, 24, 32, 0.12);
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .copybox {
+      width: 100%;
+      min-height: 152px;
+      margin-top: 8px;
+      padding: 14px;
+      border: 2px solid var(--line);
+      color: var(--ink);
+      font: 760 14px/1.42 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      resize: vertical;
+    }
+
+    .small {
+      margin-top: 18px;
+      font-size: 15px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: none;
+      padding: 12px 14px;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: #ffffff;
+      font-weight: 900;
+      box-shadow: 6px 6px 0 rgba(16, 24, 32, 0.16);
+    }
+
+    .toast.visible {
+      display: block;
+    }
+
+    @media (max-width: 520px) {
+      main {
+        width: min(100% - 18px, 640px);
+        padding: 20px;
+      }
+
+      a,
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>Opening Request Form</h1>
-    <p>Use the form to share a public repo you own or have permission to submit. The review is passive only, and payment is requested after a useful preview.</p>
-    <a href="https://github.com/Saaajid61931/reposec-site/issues/new?title=Repo%20Security%20Mini-Audit%20request&body=Repo%20link%3A%0A%0AI%20own%20this%20repo%20or%20have%20permission%20to%20request%20a%20passive%20review.%0A%0APassive%20review%20only%20is%20okay.%20Please%20send%20the%20preview%20first.%0A%0AI%20understand%20the%20final%20report%20is%20INR%20499%20after%20preview%20approval.">Open request form</a>
+    <p class="eyebrow">Preview first | Pay after value</p>
+    <h1>Request Free Preview</h1>
+    <p>Use the GitHub form if you can sign in, or copy the fallback request for WhatsApp/DM. The review is passive only, and payment is requested only after you receive a useful preview.</p>
+    <div class="actions">
+      <a href="https://github.com/Saaajid61931/reposec-site/issues/new?template=mini-audit-request.yml&amp;title=Repo%20Security%20Mini-Audit%20request">Open GitHub form</a>
+      <a class="secondary" href="index.html">Back to page</a>
+    </div>
+    <p class="small">If GitHub sign-in gets in the way, copy this message and send it in the same chat where you received the link.</p>
+    <textarea id="request-copy" class="copybox" readonly>Hi Sajid, I want the INR 499 Repo Security Mini-Audit.
+
+Repo link:
+I own this repo or have permission to request a review.
+
+Passive review only is okay. Please send the preview first.
+
+Request page: https://reposec.site/request.html</textarea>
+    <div class="actions">
+      <button type="button" data-copy="#request-copy">Copy fallback request</button>
+    </div>
   </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script>
+    const toast = document.querySelector("#toast");
+    let toastTimer;
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add("visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("visible"), 1400);
+    }
+
+    async function copyText(value) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return;
+      }
+
+      const scratch = document.createElement("textarea");
+      scratch.value = value;
+      scratch.style.position = "fixed";
+      scratch.style.left = "-9999px";
+      document.body.appendChild(scratch);
+      scratch.focus();
+      scratch.select();
+      document.execCommand("copy");
+      scratch.remove();
+    }
+
+    document.querySelector("[data-copy]").addEventListener("click", async (event) => {
+      const target = document.querySelector(event.currentTarget.dataset.copy);
+      target.select();
+      await copyText(target.value);
+      showToast("Request copied");
+    });
+  </script>
 </body>
 </html>

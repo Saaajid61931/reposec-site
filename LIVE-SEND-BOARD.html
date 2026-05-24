@@ -315,7 +315,7 @@
     <header>
       <section>
         <h1>RepoSec Send Board</h1>
-        <p class="sub">Use this after the landing page is live. Paste the live URL, choose a message, send to 15 permission-safe leads, and track replies.</p>
+        <p class="sub">Use this after the landing page is live. Paste the live URL, start with the short direct ask, send to 15 permission-safe leads, and track replies.</p>
         <div class="stats">
           <div class="stat"><strong id="sent-count">0</strong>sent</div>
           <div class="stat"><strong id="reply-count">0</strong>replies</div>
@@ -331,7 +331,7 @@
           <a class="button secondary" href="request.html">Request Form</a>
           <a class="button secondary" href="repo-security-499-share-card.png">Share Card</a>
         </div>
-        <p class="mini" style="margin-top:12px;">Use the request form for public visitors who are not already replying in your DM thread.</p>
+        <p class="mini" style="margin-top:12px;">Best conversion path: send the short ask first, then use the request form for anyone who wants a public intake instead of a DM reply.</p>
       </section>
     </header>
 
@@ -340,6 +340,7 @@
         <h2>Message</h2>
         <label for="template">Template</label>
         <select id="template">
+          <option value="short">Short Direct Ask</option>
           <option value="warm">Warm WhatsApp / DM</option>
           <option value="founder">Founder / Freelancer</option>
           <option value="student">Student / Beginner Developer</option>
@@ -431,7 +432,7 @@
     function defaultState() {
       return {
         url: "https://reposec.site",
-        template: "warm",
+        template: "short",
         leads: leads.map(() => ({ sent: false, replied: false, paid: false }))
       };
     }
@@ -454,6 +455,14 @@
       const url = state.url || "https://reposec.site";
       const requestUrl = `${url.replace(/\/+$/, "")}/request.html`;
       const templates = {
+        short: `Do you have one public GitHub repo you own and want checked?
+
+I am doing a passive Repo Security Mini-Audit: dependencies, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot, and 5 fixes.
+
+Preview first. Final checklist/report is INR 499 after UPI payment. No login testing or production probing.
+
+Reply REPO or use the request form:
+${requestUrl}`,
         warm: `Do you have a public GitHub repo or small app repo you want checked quickly?
 
 I made a small page for the INR 499 Repo Security Mini-Audit:
@@ -580,7 +589,7 @@ Once payment is received, I will send the final checklist/report.`,
 
 I can only do a passive review for a repo you own or have permission to share.`
       };
-      return templates[name] || templates.warm;
+      return templates[name] || templates.short;
     }
 
     function templateForLead(index) {
@@ -591,7 +600,7 @@ I can only do a passive review for a repo you own or have permission to share.`
       if (text.includes("founder") || text.includes("freelancer") || text.includes("agency") || text.includes("client")) return "founder";
       if (text.includes("group") || text.includes("club") || text.includes("post only") || text.includes("ask permission")) return "permission";
       if (text.includes("wordpress") || text.includes("site owner")) return "ask";
-      return "warm";
+      return "short";
     }
 
     function textForLead(index) {
