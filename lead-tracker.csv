@@ -1,0 +1,17 @@
+id,segment,channel,name_or_handle,repo_or_context,status,next_action,payment_status,notes
+1,warm developer,whatsapp,,,"not_sent","send warm message","not_received",
+2,freelancer friend,whatsapp,,,"not_sent","send founder/freelancer version","not_received",
+3,student developer,whatsapp,,,"not_sent","send student version","not_received",
+4,startup founder,linkedin,,,"not_sent","send founder/freelancer version","not_received",
+5,agency owner,whatsapp,,,"not_sent","send warm message","not_received",
+6,bootcamp learner,whatsapp,,,"not_sent","send student version","not_received",
+7,open-source maintainer,dm,,,"not_sent","send permission-safe message","not_received",
+8,creator with app repo,dm,,,"not_sent","send warm message","not_received",
+9,WordPress/site owner,whatsapp,,,"not_sent","ask if they have repo/app folder","not_received",
+10,college coding club admin,whatsapp,,,"not_sent","ask permission to post public message","not_received",
+11,developer group,whatsapp,,,"not_sent","post only if allowed","not_received",
+12,startup founder group,whatsapp,,,"not_sent","post only if allowed","not_received",
+13,past website client,whatsapp,,,"not_sent","ask if they want quick repo hygiene check","not_received",
+14,friend building app,whatsapp,,,"not_sent","send warm message","not_received",
+15,GitHub Actions user,linkedin,,,"not_sent","send GitHub Actions angle","not_received",
+
