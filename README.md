@@ -4,6 +4,8 @@ Small GitHub Pages site for selling the INR 499 Repo Security Mini-Audit.
 
 ## Offer
 
+- Live page: `https://reposec.site`
+- Public intake: `https://reposec.site/request.html`
 - Passive review for one GitHub repo or app folder.
 - Checks dependencies, secret patterns, GitHub Actions permissions, SECURITY.md, Dependabot, and five prioritized fixes.
 - UPI payout: `sajidofaspire@oksbi`.
@@ -43,6 +45,9 @@ See `PUBLISH-COMMANDS.md` for the exact GitHub commands to run after reviewing t
 
 ## Sell
 
+- Send `https://reposec.site` first.
+- For public visitors who are not in your DMs, send `https://reposec.site/request.html`.
+- The `.github/ISSUE_TEMPLATE` folder adds a structured mini-audit request form on GitHub.
 - Use `OUTREACH.md` after the page is live.
 - Use `LIVE-SEND-BOARD.html` to paste the live URL, copy outreach messages, open WhatsApp, and track the first 15 sends.
 - Track sends and replies in `lead-tracker.csv`.
