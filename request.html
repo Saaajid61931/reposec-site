@@ -3,198 +3,463 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Request Repo Security Mini-Audit Preview</title>
+  <title>RepoSec - Settings & Scan History Vault</title>
+  <meta name="description" content="Manage your local GitHub tokens, scan history, and unlocked security reports.">
+  
+  <!-- Web Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      color-scheme: light;
-      --ink: #111a22;
-      --muted: #536474;
-      --green: #05844f;
-      --line: #c9d4dc;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg-base: #ffffff;
+      --bg-canvas: #fafafa;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #4b5563;
+      --text-light: #6b7280;
+      
+      --border-thin: #e5e7eb;
+      --border-thick: #111827;
+      
+      --accent-green: #065f46;
+      --accent-green-bg: #ecfdf5;
+      
+      --risk-high: #dc2626;
+      --risk-high-bg: #fef2f2;
+      
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #f7faf8 0%, #d8ebf7 100%);
-      color: var(--ink);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding-bottom: 80px;
     }
 
-    main {
-      width: min(640px, calc(100% - 32px));
-      padding: 28px;
-      border: 2px solid var(--ink);
-      background: #ffffff;
-      box-shadow: 8px 8px 0 rgba(16, 24, 32, 0.12);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      margin: 0 0 14px;
-      padding: 7px 9px;
-      border: 2px solid var(--ink);
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 920;
-      letter-spacing: 0;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(32px, 7vw, 54px);
-      line-height: 0.95;
-      letter-spacing: 0;
-    }
-
-    p {
-      color: var(--muted);
-      font-size: 17px;
-      font-weight: 760;
-      line-height: 1.45;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 18px 0;
-    }
-
-    a,
-    button {
-      display: inline-flex;
-      min-height: 48px;
-      align-items: center;
-      justify-content: center;
-      padding: 13px 18px;
-      border: 2px solid var(--ink);
-      border-radius: 4px;
-      background: var(--green);
-      color: #ffffff;
-      font: 920 15px/1 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    a {
+      color: inherit;
       text-decoration: none;
-      box-shadow: 5px 5px 0 rgba(16, 24, 32, 0.12);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar */
+    .navbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border-thin);
+      background-color: var(--bg-base);
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .navbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      background-color: var(--accent-green-bg);
+      color: var(--accent-green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      border: 1px solid var(--border-thin);
+    }
+
+    .btn-nav-back {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Card Panels */
+    .section-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 32px;
+    }
+
+    .section-card h2 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* Token settings form elements */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+    }
+
+    .token-input {
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+    }
+
+    .token-input:focus {
+      box-shadow: 0 0 0 3px var(--accent-green-bg);
+      border-color: var(--accent-green);
+    }
+
+    .btn-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      height: 40px;
+      padding: 0 18px;
+      background-color: var(--accent-green);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13.5px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
       cursor: pointer;
     }
 
-    .secondary {
-      background: #ffffff;
-      color: var(--ink);
+    .btn-primary:hover {
+      background-color: #044e39;
     }
 
-    .copybox {
-      width: 100%;
-      min-height: 152px;
-      margin-top: 8px;
-      padding: 14px;
-      border: 2px solid var(--line);
-      color: var(--ink);
-      font: 760 14px/1.42 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      resize: vertical;
+    .btn-outline-danger {
+      height: 40px;
+      padding: 0 18px;
+      background-color: transparent;
+      color: var(--risk-high);
+      font-weight: 600;
+      font-size: 13.5px;
+      border: 1px dashed var(--risk-high);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
     }
 
-    .small {
-      margin-top: 18px;
-      font-size: 15px;
+    .btn-outline-danger:hover {
+      background-color: var(--risk-high-bg);
     }
 
+    /* History & Report List items */
+    .list-wrapper {
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-canvas);
+      overflow: hidden;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-thin);
+      background-color: var(--bg-card);
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+
+    .item-subtitle {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .btn-link-action {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-green);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-link-action:hover {
+      text-decoration: underline;
+    }
+
+    .empty-state {
+      padding: 32px 18px;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Toast styling */
     .toast {
       position: fixed;
-      right: 16px;
-      bottom: 16px;
-      display: none;
-      padding: 12px 14px;
-      border: 2px solid var(--ink);
-      background: var(--ink);
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      background-color: var(--text-main);
       color: #ffffff;
-      font-weight: 900;
-      box-shadow: 6px 6px 0 rgba(16, 24, 32, 0.16);
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
     }
 
-    .toast.visible {
-      display: block;
-    }
-
-    @media (max-width: 520px) {
-      main {
-        width: min(100% - 18px, 640px);
-        padding: 20px;
-      }
-
-      a,
-      button {
-        width: 100%;
-      }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Preview first | Pay after value</p>
-    <h1>Request Free Preview</h1>
-    <p>Use the GitHub form if you can sign in, or copy the fallback request for WhatsApp/DM. The review is passive only, and payment is requested only after you receive a useful preview.</p>
-    <div class="actions">
-      <a href="https://github.com/Saaajid61931/reposec-site/issues/new?template=mini-audit-request.yml&amp;title=Repo%20Security%20Mini-Audit%20request">Open GitHub form</a>
-      <a class="secondary" href="index.html">Back to page</a>
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand">
+        RepoSec <span>Scanner</span>
+      </a>
+      <a href="index.html" class="btn-nav-back">
+        ← Back to Scanner
+      </a>
     </div>
-    <p class="small">If GitHub sign-in gets in the way, copy this message and send it in the same chat where you received the link.</p>
-    <textarea id="request-copy" class="copybox" readonly>Hi Sajid, I want the INR 499 Repo Security Mini-Audit.
+  </nav>
 
-Repo link:
-I own this repo or have permission to request a review.
+  <main class="container">
+    
+    <!-- Token Configuration Vault -->
+    <section class="section-card">
+      <h2>GitHub Security Vault</h2>
+      <p>
+        To scan private repositories or remove GitHub API rate restrictions (60 checks/hour), you can supply a Personal Access Token. 
+        Your token is saved securely in your browser's local sandbox storage and never passes through our systems.
+      </p>
+      
+      <div class="form-group">
+        <label class="form-label" for="vault-token">Personal Access Token (PAT)</label>
+        <input type="password" id="vault-token" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx">
+      </div>
+      
+      <div class="btn-actions">
+        <button type="button" id="btn-save-token" class="btn-primary">Save Token</button>
+        <button type="button" id="btn-clear-token" class="btn-outline-danger">Clear Token</button>
+        <a href="https://github.com/settings/tokens/new?description=RepoSec%20Browser%20Scanner&scopes=repo" target="_blank" class="btn-primary" style="display:inline-flex; align-items:center; background-color: transparent; border: 1px solid var(--border-thick); color: var(--text-main);">
+          Generate Read-Only Token ↗
+        </a>
+      </div>
+    </section>
 
-Passive review only is okay. Please send the preview first.
+    <!-- Unlocked Reports Dashboard -->
+    <section class="section-card">
+      <h2>Unlocked Reports</h2>
+      <p>Here are the repositories you have unlocked via UPI or Card payments. Click any entry to reload the full details immediately.</p>
+      
+      <div class="list-wrapper">
+        <div id="unlocked-list" class="list-container">
+          <div class="empty-state">No repositories unlocked yet.</div>
+        </div>
+      </div>
+    </section>
 
-Request page: https://reposec.site/request.html</textarea>
-    <div class="actions">
-      <button type="button" data-copy="#request-copy">Copy fallback request</button>
-    </div>
+    <!-- General Settings Actions -->
+    <section class="section-card">
+      <h2>Database Management</h2>
+      <p>Clear cached scanning states and unlocked reports stored locally in your browser cache.</p>
+      <button type="button" id="btn-clear-history" class="btn-outline-danger">
+        Reset & Wipe All History
+      </button>
+    </section>
+
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+  <div id="toast" class="toast">Settings updated</div>
 
   <script>
-    const toast = document.querySelector("#toast");
-    let toastTimer;
+    const vaultToken = document.getElementById("vault-token");
+    const btnSaveToken = document.getElementById("btn-save-token");
+    const btnClearToken = document.getElementById("btn-clear-token");
+    const unlockedList = document.getElementById("unlocked-list");
+    const btnClearHistory = document.getElementById("btn-clear-history");
+    const toast = document.getElementById("toast");
 
-    function showToast(text) {
-      toast.textContent = text;
-      toast.classList.add("visible");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("visible"), 1400);
+    // Show toast message
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
     }
 
-    async function copyText(value) {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(value);
+    // Load Token
+    if (localStorage.getItem("reposec_pat_token")) {
+      vaultToken.value = localStorage.getItem("reposec_pat_token");
+    }
+
+    // Save Token
+    btnSaveToken.addEventListener("click", () => {
+      const val = vaultToken.value.trim();
+      if (!val) {
+        alert("Please enter a token value before saving.");
+        return;
+      }
+      localStorage.setItem("reposec_pat_token", val);
+      showToast("GitHub token saved securely.");
+    });
+
+    // Clear Token
+    btnClearToken.addEventListener("click", () => {
+      localStorage.removeItem("reposec_pat_token");
+      vaultToken.value = "";
+      showToast("GitHub token removed.");
+    });
+
+    // Populate Unlocked List
+    function populateUnlocked() {
+      unlockedList.innerHTML = "";
+      const unlockedRepos = [];
+      
+      // Query localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith("reposec_unlocked_")) {
+          const repoName = key.replace("reposec_unlocked_", "");
+          unlockedRepos.push(repoName);
+        }
+      }
+
+      if (unlockedRepos.length === 0) {
+        unlockedList.innerHTML = `<div class="empty-state">No repositories unlocked yet.</div>`;
         return;
       }
 
-      const scratch = document.createElement("textarea");
-      scratch.value = value;
-      scratch.style.position = "fixed";
-      scratch.style.left = "-9999px";
-      document.body.appendChild(scratch);
-      scratch.focus();
-      scratch.select();
-      document.execCommand("copy");
-      scratch.remove();
+      unlockedRepos.forEach(repo => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        
+        const meta = document.createElement("div");
+        meta.className = "item-meta";
+        
+        const title = document.createElement("div");
+        title.className = "item-title";
+        title.textContent = repo;
+        
+        const sub = document.createElement("div");
+        sub.className = "item-subtitle";
+        
+        // Check check type
+        const utr = localStorage.getItem(`reposec_upi_utr_${repo}`);
+        sub.textContent = utr ? `Unlocked via UPI (UTR: ${utr})` : "Unlocked via Checkout Card";
+        
+        meta.appendChild(title);
+        meta.appendChild(sub);
+        
+        const action = document.createElement("a");
+        action.className = "btn-link-action";
+        action.href = `index.html?unlock=true&repo=${encodeURIComponent(repo)}`;
+        action.innerHTML = `View Report ➔`;
+        
+        item.appendChild(meta);
+        item.appendChild(action);
+        unlockedList.appendChild(item);
+      });
     }
 
-    document.querySelector("[data-copy]").addEventListener("click", async (event) => {
-      const target = document.querySelector(event.currentTarget.dataset.copy);
-      target.select();
-      await copyText(target.value);
-      showToast("Request copied");
+    // Clear All cache history
+    btnClearHistory.addEventListener("click", () => {
+      if (confirm("Are you sure you want to reset all data? This will clear all local tokens, cached scan histories, and unlocked reports. This action cannot be undone.")) {
+        // Find and remove all reposec entries
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("reposec_")) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        vaultToken.value = "";
+        showToast("All local database records wiped.");
+        populateUnlocked();
+      }
     });
+
+    // Run mount populate
+    populateUnlocked();
   </script>
 </body>
 </html>

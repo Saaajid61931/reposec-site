@@ -3,615 +3,1450 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Repo Security Mini-Audit - INR 499</title>
-  <meta name="description" content="Request a safe passive repo security mini-audit. Free preview first; INR 499 by UPI only if the preview is useful.">
-  <meta property="og:title" content="Repo Security Mini-Audit - INR 499">
-  <meta property="og:description" content="Dependency, secret pattern, GitHub Actions, SECURITY.md, and Dependabot checks for repos you own or have permission to share.">
-  <meta property="og:image" content="repo-security-499-share-card.png">
-  <meta name="theme-color" content="#101820">
+  <title>RepoSec - Automated Client-Side Repository Security Scanner</title>
+  <meta name="description" content="Secure your GitHub repository in 5 seconds client-side. Check for unpinned actions, loose dependencies, committed env files, and secrets.">
+  
+  <!-- Web Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      color-scheme: light;
-      --ink: #111a22;
-      --muted: #536474;
-      --line: #c9d4dc;
-      --paper: #f7faf8;
-      --white: #ffffff;
-      --green: #05844f;
-      --green-dark: #03613d;
-      --blue: #d8ebf7;
-      --peach: #ffe6d8;
-      --dark: #101820;
-      --shadow: 0 18px 52px rgba(17, 26, 34, 0.14);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      /* Colors: Stripe/Linear-Style Clean Light Mode */
+      --bg-base: #ffffff;
+      --bg-canvas: #fafafa;
+      --bg-card: #ffffff;
+      --bg-input: #ffffff;
+      
+      --text-main: #111827; /* Near black */
+      --text-muted: #4b5563; /* Medium gray */
+      --text-light: #6b7280; /* Soft gray */
+      
+      --border-thin: #e5e7eb;
+      --border-thick: #111827;
+      
+      --accent-green: #065f46;      /* Deep Forest Green */
+      --accent-green-bg: #ecfdf5;
+      --accent-green-hover: #044e39;
+      
+      --risk-high: #dc2626;         /* Red */
+      --risk-high-bg: #fef2f2;
+      --risk-medium: #d97706;       /* Yellow/Orange */
+      --risk-medium-bg: #fffbeb;
+      --risk-low: #2563eb;          /* Blue */
+      --risk-low-bg: #eff6ff;
+      
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
+      
+      --transition-fast: 0.15s ease;
     }
 
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
     }
 
     a {
       color: inherit;
+      text-decoration: none;
     }
 
-    .hero {
-      position: relative;
-      min-height: 84svh;
+    .container {
+      width: 100%;
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border-thin);
+      background-color: var(--bg-base);
       display: flex;
       align-items: center;
-      overflow: hidden;
-      border-bottom: 2px solid var(--line);
-      background:
-        linear-gradient(90deg, rgba(247, 250, 248, 0.98) 0%, rgba(247, 250, 248, 0.9) 44%, rgba(247, 250, 248, 0.54) 100%),
-        url("repo-security-499-share-card.png") right center / min(56vw, 680px) auto no-repeat,
-        linear-gradient(135deg, #e7f3ec 0%, #d9ecfb 62%, #ffe0d1 100%);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .hero-inner,
-    .section-inner {
-      width: min(1120px, calc(100% - 40px));
-      margin: 0 auto;
+    .navbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
 
-    .eyebrow {
-      display: inline-flex;
+    .brand {
+      display: flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 18px;
-      padding: 8px 10px;
-      border: 2px solid var(--dark);
-      background: rgba(255, 255, 255, 0.74);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span {
+      background-color: var(--accent-green-bg);
+      color: var(--accent-green);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
       text-transform: uppercase;
+      border: 1px solid var(--border-thin);
     }
 
-    h1 {
-      max-width: 700px;
-      margin: 0;
-      font-size: clamp(48px, 8vw, 92px);
-      line-height: 0.88;
-      letter-spacing: 0;
-    }
-
-    .hero-copy {
-      max-width: 620px;
-      margin: 22px 0 0;
-      color: #344657;
-      font-size: clamp(19px, 2.2vw, 28px);
-      line-height: 1.2;
-      font-weight: 780;
-    }
-
-    .actions {
+    .nav-links {
       display: flex;
-      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 56px 0 40px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 32px;
+      font-weight: 450;
+    }
+
+    /* Interactive Scanner Card */
+    .scanner-card {
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-thick);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 4px 4px 0px rgba(17, 24, 32, 0.08);
+      margin-bottom: 48px;
+    }
+
+    .scanner-form {
+      display: flex;
       gap: 12px;
-      margin-top: 28px;
+      position: relative;
     }
 
-    .hero-note {
-      max-width: 620px;
-      margin: 14px 0 0;
-      color: #344657;
+    .input-wrapper {
+      position: relative;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .github-icon-prefix {
+      position: absolute;
+      left: 14px;
+      color: var(--text-light);
+      font-weight: 500;
+      font-size: 14px;
+      font-family: var(--font-mono);
+      pointer-events: none;
+    }
+
+    .url-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px 0 40px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-md);
+      font-family: var(--font-sans);
       font-size: 15px;
-      font-weight: 820;
-      line-height: 1.35;
+      font-weight: 500;
+      outline: none;
+      background-color: var(--bg-input);
+      transition: box-shadow var(--transition-fast);
     }
 
-    .hero-note strong {
-      color: var(--green-dark);
+    .url-input:focus {
+      box-shadow: 0 0 0 3px var(--accent-green-bg);
+      border-color: var(--accent-green);
     }
 
-    .button {
-      display: inline-flex;
-      min-height: 48px;
+    .btn-settings {
+      height: 52px;
+      width: 52px;
+      display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-md);
+      background-color: var(--bg-base);
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+    }
+
+    .btn-settings:hover {
+      background-color: var(--bg-canvas);
+    }
+
+    .btn-settings svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text-main);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .btn-submit {
+      height: 52px;
+      padding: 0 24px;
+      background-color: var(--accent-green);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
       gap: 8px;
-      padding: 13px 18px;
-      border: 2px solid var(--dark);
-      border-radius: 4px;
-      background: var(--dark);
-      color: var(--white);
-      font-weight: 920;
-      text-decoration: none;
-      box-shadow: 5px 5px 0 rgba(16, 24, 32, 0.12);
+      transition: background-color var(--transition-fast);
+    }
+
+    .btn-submit:hover {
+      background-color: var(--accent-green-hover);
+    }
+
+    /* Advanced Settings Panel */
+    .settings-panel {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border-thin);
+      display: none;
+    }
+
+    .settings-panel.visible {
+      display: block;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .token-input {
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      outline: none;
+    }
+
+    .token-input:focus {
+      border-color: var(--text-main);
+    }
+
+    .token-help {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    /* Scanner Console Logs */
+    .scanner-logs {
+      margin-top: 16px;
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      max-height: 160px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .scanner-logs.visible {
+      display: block;
+    }
+
+    .log-line {
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .log-line.success {
+      color: var(--accent-green);
+    }
+
+    .log-line.error {
+      color: var(--risk-high);
+    }
+
+    .log-spinner {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--border-thin);
+      border-top-color: var(--text-main);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Results Dashboard Grid */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      margin-top: 24px;
+      display: none;
+    }
+
+    .dashboard.visible {
+      display: grid;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .score-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .score-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    .score-gauge-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 16px;
+    }
+
+    .score-gauge {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .score-gauge-bg {
+      fill: none;
+      stroke: var(--bg-tertiary);
+      stroke-width: 10;
+    }
+
+    .score-gauge-fill {
+      fill: none;
+      stroke: var(--accent-green);
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 408.4; /* 2 * PI * 65 */
+      stroke-dashoffset: 408.4;
+      transition: stroke-dashoffset 1s ease-out;
+    }
+
+    .score-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text-main);
+    }
+
+    .score-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .meta-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      font-size: 13px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--bg-tertiary);
+    }
+
+    .meta-row:last-child {
+      border-bottom: none;
+    }
+
+    .meta-label {
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .meta-value {
+      color: var(--text-main);
+      font-weight: 600;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .findings-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    /* Findings Panel cards */
+    .finding-panel {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .finding-panel.high { border-left: 4px solid var(--risk-high); }
+    .finding-panel.medium { border-left: 4px solid var(--risk-medium); }
+    .finding-panel.low { border-left: 4px solid var(--risk-low); }
+
+    .finding-header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--bg-card);
       cursor: pointer;
     }
 
-    .button.secondary {
-      background: var(--white);
-      color: var(--dark);
-    }
-
-    .button.green {
-      background: var(--green);
-    }
-
-    .proof-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 34px;
-      max-width: 850px;
-    }
-
-    .proof-item {
-      min-height: 74px;
-      padding: 12px;
-      border: 2px solid var(--line);
-      background: rgba(255, 255, 255, 0.84);
-      font-weight: 880;
-      line-height: 1.12;
-    }
-
-    .proof-item strong {
-      display: block;
-      color: var(--green);
-      font-size: 22px;
-    }
-
-    section {
-      padding: 54px 0;
-    }
-
-    .band-blue {
-      background: linear-gradient(135deg, #f7faf8 0%, var(--blue) 100%);
-      border-bottom: 2px solid var(--line);
-    }
-
-    .band-peach {
-      background: linear-gradient(135deg, #f7faf8 0%, var(--peach) 100%);
-      border-top: 2px solid var(--line);
-      border-bottom: 2px solid var(--line);
-    }
-
-    .section-title {
-      margin: 0 0 22px;
-      font-size: clamp(30px, 4vw, 48px);
-      line-height: 0.98;
-      letter-spacing: 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .panel {
-      min-height: 100%;
-      padding: 20px;
-      border: 2px solid var(--line);
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.88);
-    }
-
-    .panel h3 {
-      margin: 0 0 10px;
-      font-size: 22px;
-      line-height: 1.05;
-    }
-
-    .panel p,
-    .panel li {
-      color: var(--muted);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.42;
-    }
-
-    .panel ul {
-      margin: 0;
-      padding-left: 20px;
-    }
-
-    .sample {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
-    .step {
-      min-height: 150px;
-      padding: 18px;
-      border: 2px solid var(--line);
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.9);
-    }
-
-    .step-number {
-      display: inline-flex;
-      width: 34px;
-      height: 34px;
+    .finding-title-group {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      border: 2px solid var(--dark);
-      background: var(--green);
-      color: var(--white);
-      font-weight: 950;
+      gap: 12px;
     }
 
-    .step h3 {
-      margin: 0 0 8px;
-      font-size: 21px;
-      line-height: 1.04;
-    }
-
-    .step p {
-      margin: 0;
-      color: var(--muted);
+    .finding-title {
       font-size: 15px;
-      font-weight: 760;
-      line-height: 1.34;
+      font-weight: 700;
+      color: var(--text-main);
     }
 
-    .finding {
-      margin-top: 12px;
-      padding: 14px;
-      border: 2px solid #d8dde2;
-      background: var(--white);
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .finding strong {
-      display: block;
-      color: var(--dark);
-      font-size: 18px;
+    .badge.high { background-color: var(--risk-high-bg); color: var(--risk-high); }
+    .badge.medium { background-color: var(--risk-medium-bg); color: var(--risk-medium); }
+    .badge.low { background-color: var(--risk-low-bg); color: var(--risk-low); }
+
+    .finding-body {
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--bg-tertiary);
+      background-color: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .payment {
-      display: grid;
-      grid-template-columns: minmax(260px, 420px) 1fr;
-      gap: 28px;
-      align-items: center;
-    }
-
-    .qr {
-      width: min(100%, 360px);
-      padding: 14px;
-      border: 2px solid var(--line);
-      background: var(--white);
-      box-shadow: var(--shadow);
-    }
-
-    .pay-box {
-      max-width: 610px;
-    }
-
-    .amount {
-      margin: 0 0 8px;
-      color: var(--green);
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: 0.9;
-      font-weight: 950;
-    }
-
-    .upi {
-      margin: 0 0 20px;
-      color: var(--green-dark);
-      font-size: clamp(22px, 3vw, 36px);
-      line-height: 1;
-      font-weight: 920;
-      overflow-wrap: anywhere;
-    }
-
-    .copybox {
-      width: 100%;
-      min-height: 160px;
+    .finding-desc {
+      font-size: 14px;
+      color: var(--text-muted);
       margin-top: 14px;
-      padding: 14px;
-      border: 2px solid var(--line);
-      background: var(--white);
-      color: var(--ink);
-      font: 760 14px/1.42 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      resize: vertical;
     }
 
-    .mini-note {
-      color: var(--muted);
-      font-weight: 760;
+    .finding-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .finding-evidence {
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-main);
+      overflow-x: auto;
+      max-height: 150px;
+    }
+
+    .finding-fix {
+      background-color: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: var(--accent-green);
       line-height: 1.45;
     }
 
-    .intake-box {
-      margin: 18px 0 8px;
-      padding: 18px;
-      border: 2px solid var(--dark);
-      border-radius: 6px;
-      background: rgba(216, 235, 247, 0.62);
+    /* Paywall Blur Mask */
+    .paywalled {
+      filter: blur(8px);
+      pointer-events: none;
+      user-select: none;
     }
 
-    .intake-box h3 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      line-height: 1.05;
+    /* Paywall Overlay */
+    .paywall-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+      background: linear-gradient(to bottom, rgba(250, 250, 250, 0) 0%, rgba(250, 250, 250, 0.95) 280px, rgba(250, 250, 250, 1) 100%);
     }
 
-    .intake-box p {
-      margin: 0;
+    .paywall-card {
+      width: 100%;
+      max-width: 520px;
+      background-color: var(--bg-card);
+      border: 2px solid var(--border-thick);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      height: fit-content;
+      text-align: center;
     }
 
-    .footer {
-      padding: 28px 0 42px;
-      color: var(--muted);
-      font-weight: 760;
+    .paywall-card h3 {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
     }
 
-    .toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 20;
+    .paywall-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    /* Paywall Tabs */
+    .pay-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-thin);
+      margin-bottom: 20px;
+    }
+
+    .pay-tab {
+      flex: 1;
+      padding: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-light);
+      border-bottom: 2px solid transparent;
+      text-align: center;
+    }
+
+    .pay-tab.active {
+      color: var(--text-main);
+      border-bottom-color: var(--border-thick);
+    }
+
+    .pay-content {
       display: none;
-      padding: 12px 14px;
-      border: 2px solid var(--dark);
-      background: var(--dark);
-      color: var(--white);
-      font-weight: 900;
-      box-shadow: 6px 6px 0 rgba(16, 24, 32, 0.16);
     }
 
-    .toast.visible {
+    .pay-content.active {
       display: block;
     }
 
-    @media (max-width: 860px) {
-      .hero {
-        min-height: 82svh;
-        align-items: flex-start;
-        padding-top: 54px;
-        background:
-          linear-gradient(180deg, rgba(247, 250, 248, 0.99) 0%, rgba(247, 250, 248, 0.93) 54%, rgba(247, 250, 248, 0.76) 100%),
-          url("repo-security-499-share-card.png") center bottom / 92vw auto no-repeat,
-          linear-gradient(135deg, #e7f3ec 0%, #d9ecfb 62%, #ffe0d1 100%);
-      }
+    .upi-instructions {
+      text-align: left;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
 
-      .hero-inner,
-      .section-inner {
-        width: min(100% - 24px, 720px);
-      }
+    .upi-qr-image {
+      display: block;
+      width: 160px;
+      height: 160px;
+      margin: 12px auto;
+      border: 1px solid var(--border-thin);
+      padding: 8px;
+      border-radius: var(--radius-sm);
+    }
 
-      .proof-strip,
-      .grid,
-      .sample,
-      .steps,
-      .payment {
+    .upi-detail-box {
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-copy-small {
+      font-size: 11px;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-thick);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    .upi-input-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .upi-ref-input {
+      flex-grow: 1;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .upi-ref-input:focus {
+      border-color: var(--accent-green);
+    }
+
+    .btn-unlock-small {
+      height: 42px;
+      background-color: var(--accent-green);
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0 16px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .btn-unlock-small:hover {
+      background-color: var(--accent-green-hover);
+    }
+
+    .gumroad-box {
+      padding: 16px 0;
+    }
+
+    .btn-checkout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 48px;
+      background-color: var(--accent-green);
+      color: white;
+      font-weight: 600;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 15px;
+      gap: 8px;
+    }
+
+    .btn-checkout:hover {
+      background-color: var(--accent-green-hover);
+    }
+
+    .btn-checkout-secondary {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 40px;
+      background-color: transparent;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-thin);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-checkout-secondary:hover {
+      color: var(--text-main);
+      border-color: var(--border-thick);
+    }
+
+    /* Unlocked Dashboard Footer Actions */
+    .unlocked-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-thin);
+      display: none;
+    }
+
+    .unlocked-actions.visible {
+      display: flex;
+    }
+
+    .btn-action-outline {
+      height: 40px;
+      padding: 0 16px;
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-base);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action-outline:hover {
+      background-color: var(--bg-canvas);
+    }
+
+    /* Priority checklist card */
+    .priority-card {
+      background-color: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+
+    .priority-card h3 {
+      font-size: 14px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent-green);
+      margin-bottom: 12px;
+    }
+
+    .priority-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      list-style-type: none;
+    }
+
+    .priority-item {
+      font-size: 13.5px;
+      color: var(--text-main);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+
+    .priority-item::before {
+      content: "→";
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    /* Bottom Info Sections (FAQs, Privacy) */
+    .info-sections {
+      margin-top: 64px;
+      border-top: 1px solid var(--border-thin);
+      padding-top: 48px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .info-block h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .info-block p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      background-color: var(--text-main);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Print styling support */
+    @media print {
+      body { background-color: white; padding-bottom: 0; }
+      .navbar, .hero, .scanner-card, .paywall-overlay, .unlocked-actions, .info-sections {
+        display: none !important;
+      }
+      .dashboard { display: block !important; }
+      .sidebar { width: 100% !important; margin-bottom: 24px; }
+      .findings-container { filter: none !important; }
+      .finding-body { display: flex !important; }
+    }
+
+    /* Mobile responsive layouts */
+    @media (max-width: 768px) {
+      .dashboard {
         grid-template-columns: 1fr;
       }
-
-      .proof-strip {
-        gap: 8px;
+      .scanner-form {
+        flex-direction: column;
       }
-
-      .proof-item {
-        min-height: auto;
+      .btn-submit {
+        justify-content: center;
       }
-
-      section {
-        padding: 38px 0;
-      }
-
-      .actions .button {
-        width: 100%;
+      .info-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <main>
-    <header class="hero">
-      <div class="hero-inner">
-        <p class="eyebrow">INR 499 | Pay after preview | Passive review only</p>
-        <h1>Repo Security Mini-Audit</h1>
-        <p class="hero-copy">Send one public repo you own. Get a small useful preview first. Pay INR 499 only if you want the final prioritized checklist.</p>
-        <div class="actions">
-          <a class="button green" href="request.html">Request free preview</a>
-          <a class="button secondary" href="#start">Copy request message</a>
-          <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample report</a>
-        </div>
-        <p class="hero-note"><strong>Passive only:</strong> no login, no production probing, no passwords, no OTPs, no UPI PINs. Dependency posture, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot, and five fixes.</p>
-        <div class="proof-strip" aria-label="Key details">
-          <div class="proof-item"><strong>INR 499</strong>One repo or app folder</div>
-          <div class="proof-item"><strong>Preview first</strong>Decide after seeing value</div>
-          <div class="proof-item"><strong>No hacking</strong>No login tests or probing</div>
-          <div class="proof-item"><strong>Fast output</strong>Checklist plus 5 fixes</div>
-        </div>
+
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand">
+        RepoSec <span>Scanner</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about">Privacy Guarantee</a>
+        <a href="#faq">FAQ</a>
       </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="hero">
+      <h1>Secure Your Repository in 5 Seconds</h1>
+      <p>Scan workflows, dependency ranges, ignore structures, and configurations directly in your browser. Complete privacy, zero code uploads.</p>
     </header>
 
-    <section class="band-blue" id="included">
-      <div class="section-inner">
-        <h2 class="section-title">What You Get</h2>
-        <div class="grid">
-          <article class="panel">
-            <h3>Dependency Risk</h3>
-            <p>Lockfile and manifest review for risky package posture, loose ranges, missing audit habits, and quick hardening wins.</p>
-          </article>
-          <article class="panel">
-            <h3>Secret Exposure Patterns</h3>
-            <p>Passive scan for common secret-like patterns without printing private values in the final report.</p>
-          </article>
-          <article class="panel">
-            <h3>GitHub Hygiene</h3>
-            <p>Actions permission posture, missing Dependabot setup, absent SECURITY.md path, and repo handoff risks.</p>
-          </article>
+    <!-- Scan Engine Panel -->
+    <section class="scanner-card">
+      <div class="scanner-form">
+        <div class="input-wrapper">
+          <span class="github-icon-prefix">github.com/</span>
+          <input type="text" id="repo-url" class="url-input" placeholder="owner/repository" value="Saaajid61931/reposec-site">
+        </div>
+        <button type="button" id="btn-toggle-settings" class="btn-settings" title="Scan settings & private repositories">
+          <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+        <button type="button" id="btn-scan" class="btn-submit">
+          Scan Repository
+        </button>
+      </div>
+
+      <!-- Advanced settings panel -->
+      <div id="settings-panel" class="settings-panel">
+        <div class="form-group">
+          <label class="form-label" for="pat-token">GitHub Personal Access Token (PAT) (Optional)</label>
+          <input type="password" id="pat-token" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx">
+          <span class="token-help">
+            Required <strong>only</strong> for private repositories or to bypass GitHub's rate limits. 
+            This token is saved locally in your browser's <code>localStorage</code> and is sent directly to GitHub's secure API. It is never uploaded to any intermediate server.
+          </span>
         </div>
       </div>
+
+      <!-- Logging console -->
+      <div id="scanner-logs" class="scanner-logs"></div>
     </section>
 
-    <section>
-      <div class="section-inner">
-        <h2 class="section-title">How It Works</h2>
-        <div class="steps">
-          <article class="step">
-            <span class="step-number">1</span>
-            <h3>Send Repo</h3>
-            <p>Open the request form or reply in the same WhatsApp, DM, or thread where you got this link. Share only a public repo or safe folder you own or have permission to review.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">2</span>
-            <h3>Get Preview</h3>
-            <p>I check whether the repo fits this passive mini-audit and send a short useful preview before asking for payment.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">3</span>
-            <h3>Approve & Pay UPI</h3>
-            <p>If the preview is useful, pay INR 499 to the UPI ID on this page. No OTP, UPI PIN, password, or private secret should be shared.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">4</span>
-            <h3>Receive Report</h3>
-            <p>You get the final checklist with prioritized fixes after the payment is received.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+    <!-- Scan Results Dashboard -->
+    <section id="dashboard" class="dashboard">
+      <div class="sidebar">
+        <!-- Circular radial score card -->
+        <article class="score-card">
+          <h3 class="score-title">Security Grade</h3>
+          <div class="score-gauge-wrapper">
+            <svg class="score-gauge" viewBox="0 0 140 140">
+              <circle class="score-gauge-bg" cx="70" cy="70" r="65"></circle>
+              <circle id="gauge-fill" class="score-gauge-fill" cx="70" cy="70" r="65"></circle>
+            </svg>
+            <div id="score-text" class="score-value">--</div>
+          </div>
+          <div id="score-label" class="score-label">Calculating...</div>
+        </article>
 
-    <section class="band-blue">
-      <div class="section-inner">
-        <h2 class="section-title">Proof Of Work</h2>
-        <div class="grid">
-          <article class="panel">
-            <h3>Recent OSS Patch</h3>
-            <p>Prepared a Qdrant vector database wrapper patch for the EdgeChains JavaScript SDK bounty using direct REST API calls.</p>
-          </article>
-          <article class="panel">
-            <h3>Checked Locally</h3>
-            <p>The patch passed a TypeScript build and 5 focused Vitest checks for upsert, query, scroll, retrieve, and delete request shapes.</p>
-          </article>
-          <article class="panel">
-            <h3>Same Practical Style</h3>
-            <p>The mini-audit uses the same repo-first approach: read the code, check concrete risks, and return prioritized fixes.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+        <!-- Priority Fix list -->
+        <article id="priority-card" class="priority-card">
+          <h3>Priority Actions</h3>
+          <ul id="priority-list" class="priority-list"></ul>
+        </article>
 
-    <section>
-      <div class="section-inner sample">
-        <div>
-          <h2 class="section-title">Sample Findings</h2>
-          <div class="finding">
-            <strong>Medium: No visible Dependabot configuration</strong>
-            Dependency and GitHub Actions updates are easier to miss without a regular update path.
+        <!-- Metadata card -->
+        <article class="meta-card">
+          <div class="meta-row">
+            <span class="meta-label">Repository</span>
+            <span id="meta-repo" class="meta-value">--</span>
           </div>
-          <div class="finding">
-            <strong>Medium: Loose dependency ranges</strong>
-            Ranges such as latest can pull unexpected major versions during fresh installs.
+          <div class="meta-row">
+            <span class="meta-label">Scanned On</span>
+            <span id="meta-time" class="meta-value">--</span>
           </div>
-          <div class="finding">
-            <strong>Low: No visible SECURITY.md reporting path</strong>
-            A private reporting route helps responsible disclosure.
+          <div class="meta-row">
+            <span class="meta-label">API Scope</span>
+            <span id="meta-scope" class="meta-value">Public only</span>
           </div>
-        </div>
-        <article class="panel">
-          <h3>Boundary</h3>
-          <ul>
-            <li>Only repos you own or have permission to share.</li>
-            <li>No login testing, exploit attempts, scraping private data, production probing, malware, or bypass help.</li>
-            <li>No passwords, OTPs, UPI PINs, private keys, or real secrets should be shared.</li>
-            <li>This is a practical checklist, not a penetration test or certification.</li>
-          </ul>
         </article>
       </div>
-    </section>
 
-    <section class="band-peach" id="payment">
-      <div class="section-inner payment">
-        <img class="qr" src="repo-security-499-upi-qr.png" alt="UPI QR for sajidofaspire@oksbi">
-        <div class="pay-box">
-          <h2 class="section-title">Pay After Preview</h2>
-          <p class="amount">INR 499</p>
-          <p class="upi">sajidofaspire@oksbi</p>
-          <p class="mini-note">Payment is requested after I confirm the repo is safe to review and send a useful preview. Final checklist/report is delivered after successful payment is received.</p>
-          <div class="actions">
-            <a class="button green" href="upi://pay?pa=sajidofaspire@oksbi&pn=Sajid&am=499&cu=INR&tn=Repo%20Security%20Mini%20Audit">Open UPI app</a>
-            <button class="button secondary" data-copy="#payment-copy">Copy payment note</button>
-            <a class="button secondary" href="repo-security-499-payment-card.png">Payment card</a>
-          </div>
+      <!-- Findings Display Column -->
+      <div style="position: relative;">
+        <div id="findings-wrapper" class="findings-container"></div>
+        
+        <!-- Paywall modal container -->
+        <div id="paywall-overlay" class="paywall-overlay" style="display: none;">
+          <article class="paywall-card">
+            <h3>Unlock Vulnerability Details</h3>
+            <p>Get exact file paths, line numbers, vulnerable snippets, and step-by-step priority fixes for all findings.</p>
+            
+            <div class="pay-tabs">
+              <div class="pay-tab active" data-tab="tab-upi">India UPI (INR 149)</div>
+              <div class="pay-tab" data-tab="tab-checkout">Global Card ($2.99)</div>
+            </div>
+
+            <!-- UPI Payment Content -->
+            <div id="tab-upi" class="pay-content active">
+              <p class="upi-instructions">Scan the code in any UPI app, pay INR 149, and paste the transaction UTR number to unlock.</p>
+              <img class="upi-qr-image" src="repo-security-499-upi-qr.png" alt="UPI Merchant QR Code">
+              <div class="upi-detail-box">
+                <span>sajidofaspire@oksbi</span>
+                <button type="button" class="btn-copy-small" onclick="copyText('sajidofaspire@oksbi')">Copy ID</button>
+              </div>
+              <div class="upi-input-group">
+                <input type="text" id="upi-ref" class="upi-ref-input" placeholder="12-digit UTR/Ref No.">
+                <button type="button" id="btn-unlock-upi" class="btn-unlock-small">Unlock</button>
+              </div>
+            </div>
+
+            <!-- Lemon Squeezy/Gumroad Content -->
+            <div id="tab-checkout" class="pay-content">
+              <div class="gumroad-box">
+                <p>Support the scanner and get automated, instant unlock codes via Lemon Squeezy or Stripe checkout.</p>
+                <button type="button" id="btn-checkout-trigger" class="btn-checkout">
+                  Pay $2.99 & Unlock
+                </button>
+                <button type="button" id="btn-simulate-checkout" class="btn-checkout-secondary">
+                  Simulate Purchase Redirect (Sandbox Testing)
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Print & Export Buttons -->
+        <div id="unlocked-actions" class="unlocked-actions">
+          <button type="button" id="btn-copy-md" class="btn-action-outline">
+            Copy Markdown Report
+          </button>
+          <button type="button" id="btn-print" class="btn-action-outline">
+            Print / Save as PDF
+          </button>
         </div>
       </div>
     </section>
 
-    <section id="start">
-      <div class="section-inner">
-        <h2 class="section-title">Start With This Message</h2>
-        <p class="mini-note">For public visitors, open the GitHub intake form. If GitHub sign-in is a blocker, copy the message and send it in the same chat where you received this link.</p>
-        <div class="intake-box">
-          <h3>Fastest public request</h3>
-          <p class="mini-note">Create a structured GitHub request with your repo link and permission confirmation. I will reply with a passive preview before asking for payment.</p>
-          <div class="actions">
-            <a class="button green" href="request.html">Open GitHub intake</a>
-          </div>
-        </div>
-        <textarea id="request-copy" class="copybox" readonly>Hi Sajid, I want the INR 499 Repo Security Mini-Audit.
-
-Repo link:
-I own this repo or have permission to request a review.
-
-Passive review only is okay. Please send the preview first.
-
-Request page: https://reposec.site/request.html</textarea>
-        <textarea id="payment-copy" class="copybox" readonly>This fits the INR 499 Repo Security Mini-Audit slot.
-
-UPI ID: sajidofaspire@oksbi
-Amount: INR 499
-Note: Repo Security Mini Audit
-
-Once payment is received, I will send the final checklist/report.</textarea>
-        <div class="actions">
-          <button class="button" data-copy="#request-copy">Copy request</button>
-          <a class="button green" href="request.html">Open intake</a>
-          <button class="button secondary" data-copy="#payment-copy">Copy payment note</button>
-          <a class="button secondary" href="repo-security-499-demo-buyer-preview.md">Sample preview</a>
-        </div>
+    <!-- Privacy details -->
+    <section class="info-sections" id="about">
+      <div class="info-grid">
+        <article class="info-block">
+          <h3>Privacy & Token Guarantee</h3>
+          <p>
+            This scanner works entirely client-side. The JavaScript runs directly in your browser and communicates only with the secure official GitHub API. 
+            We do not have a server backend, and your code, structure, and Personal Access Tokens never leave your local computer. It is 100% private and audit-safe.
+          </p>
+        </article>
+        <article class="info-block" id="faq">
+          <h3>Frequently Asked Questions</h3>
+          <p>
+            <strong>How is this free to scan?</strong> It is free to check your overall security grade and get a count of vulnerabilities. If your codebase has zero findings, you pay nothing. If we detect vulnerability entries, you can unlock full details for a small cup of coffee ($2.99 / INR 149).
+          </p>
+        </article>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="section-inner">Repo Security Mini-Audit. Safe passive review for repos you own or have permission to share.</div>
-  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite">Copied to clipboard</div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+  <!-- Application Logic Module -->
+  <script type="module">
+    import { runRepoScan, parseGitHubUrl } from './scanner.js';
 
-  <script>
-    const toast = document.querySelector("#toast");
-    let toastTimer;
+    // UI Nodes
+    const repoUrlInput = document.getElementById("repo-url");
+    const btnScan = document.getElementById("btn-scan");
+    const btnToggleSettings = document.getElementById("btn-toggle-settings");
+    const settingsPanel = document.getElementById("settings-panel");
+    const patTokenInput = document.getElementById("pat-token");
+    const scannerLogs = document.getElementById("scanner-logs");
+    
+    const dashboard = document.getElementById("dashboard");
+    const scoreText = document.getElementById("score-text");
+    const scoreLabel = document.getElementById("score-label");
+    const gaugeFill = document.getElementById("gauge-fill");
+    
+    const priorityList = document.getElementById("priority-list");
+    const priorityCard = document.getElementById("priority-card");
+    const metaRepo = document.getElementById("meta-repo");
+    const metaTime = document.getElementById("meta-time");
+    const metaScope = document.getElementById("meta-scope");
+    
+    const findingsWrapper = document.getElementById("findings-wrapper");
+    const paywallOverlay = document.getElementById("paywall-overlay");
+    const unlockedActions = document.getElementById("unlocked-actions");
+    
+    const upiRefInput = document.getElementById("upi-ref");
+    const btnUnlockUpi = document.getElementById("btn-unlock-upi");
+    const btnCheckoutTrigger = document.getElementById("btn-checkout-trigger");
+    const btnSimulateCheckout = document.getElementById("btn-simulate-checkout");
+    const toast = document.getElementById("toast");
 
-    async function copyFromSelector(selector) {
-      const target = document.querySelector(selector);
-      if (!target) return;
-      const text = "value" in target ? target.value : target.textContent;
-      await navigator.clipboard.writeText(text.trim());
-      toast.classList.add("visible");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("visible"), 1400);
+    let currentScanReport = null;
+
+    // Load credentials from storage
+    if (localStorage.getItem("reposec_pat_token")) {
+      patTokenInput.value = localStorage.getItem("reposec_pat_token");
     }
 
-    document.querySelectorAll("[data-copy]").forEach((button) => {
-      button.addEventListener("click", () => copyFromSelector(button.dataset.copy));
+    // Toggle settings panel
+    btnToggleSettings.addEventListener("click", () => {
+      settingsPanel.classList.toggle("visible");
     });
+
+    // Save token on edit
+    patTokenInput.addEventListener("input", () => {
+      localStorage.setItem("reposec_pat_token", patTokenInput.value.trim());
+    });
+
+    // Toggle pay tabs
+    document.querySelectorAll(".pay-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".pay-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".pay-content").forEach(c => c.classList.remove("active"));
+        
+        tab.classList.add("active");
+        const targetId = tab.dataset.tab;
+        document.getElementById(targetId).classList.add("active");
+      });
+    });
+
+    // Toast Utility
+    window.showToast = function(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
+    };
+
+    window.copyText = async function(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Copied to clipboard");
+      } catch (err) {
+        showToast("Failed to copy");
+      }
+    };
+
+    // Run Scan Action
+    btnScan.addEventListener("click", async () => {
+      const targetRepo = repoUrlInput.value.trim();
+      const token = patTokenInput.value.trim();
+      
+      if (!targetRepo) {
+        alert("Please enter a GitHub repository owner/name or URL.");
+        return;
+      }
+
+      // Reset dashboard
+      dashboard.classList.remove("visible");
+      scannerLogs.classList.add("visible");
+      scannerLogs.innerHTML = "";
+      btnScan.disabled = true;
+      btnScan.textContent = "Scanning...";
+
+      function appendLog(message, isSuccess = false, isError = false) {
+        const line = document.createElement("div");
+        line.className = "log-line" + (isSuccess ? " success" : "") + (isError ? " error" : "");
+        
+        const dot = document.createElement("span");
+        if (!isSuccess && !isError) {
+          dot.className = "log-spinner";
+        } else {
+          dot.textContent = isSuccess ? "✓" : "✗";
+        }
+        
+        const text = document.createElement("span");
+        text.textContent = message;
+        
+        line.appendChild(dot);
+        line.appendChild(text);
+        scannerLogs.appendChild(line);
+        scannerLogs.scrollTop = scannerLogs.scrollHeight;
+      }
+
+      try {
+        const report = await runRepoScan(targetRepo, token, (msg) => {
+          // Convert current loaders to checkmarks before starting new line
+          const loaders = scannerLogs.querySelectorAll(".log-spinner");
+          loaders.forEach(l => {
+            l.className = "";
+            l.textContent = "✓";
+            l.parentElement.classList.add("success");
+          });
+          appendLog(msg);
+        });
+
+        // Mark last loader as completed
+        const loaders = scannerLogs.querySelectorAll(".log-spinner");
+        loaders.forEach(l => {
+          l.className = "";
+          l.textContent = "✓";
+          l.parentElement.classList.add("success");
+        });
+
+        currentScanReport = report;
+        renderReport(report);
+        
+        // Hide logs with transition delay
+        setTimeout(() => {
+          scannerLogs.classList.remove("visible");
+        }, 1500);
+
+      } catch (error) {
+        console.error(error);
+        appendLog(error.message, false, true);
+      } finally {
+        btnScan.disabled = false;
+        btnScan.textContent = "Scan Repository";
+      }
+    });
+
+    // Render Scanned Report
+    function renderReport(report) {
+      // 1. Check if the repo is unlocked
+      const repoKey = report.repo.toLowerCase();
+      const isUnlocked = localStorage.getItem(`reposec_unlocked_${repoKey}`) === "true";
+      
+      // 2. Render Score Circle
+      scoreText.textContent = report.score;
+      
+      // Circular gauge animation offset
+      const circumference = 2 * Math.PI * 65; // ~408.4
+      const percent = report.score;
+      const offset = circumference - (percent / 100) * circumference;
+      gaugeFill.style.strokeDashoffset = offset;
+      
+      // Set label
+      if (report.score >= 90) {
+        scoreLabel.textContent = "Secure";
+        gaugeFill.style.stroke = "#059669"; // Emerald
+      } else if (report.score >= 70) {
+        scoreLabel.textContent = "Moderate Risk";
+        gaugeFill.style.stroke = "#d97706"; // Yellow/Orange
+      } else {
+        scoreLabel.textContent = "Vulnerable";
+        gaugeFill.style.stroke = "#dc2626"; // Red
+      }
+
+      // 3. Render Metadata
+      metaRepo.textContent = report.repo;
+      metaTime.textContent = report.scannedAt;
+      metaScope.textContent = patTokenInput.value.trim() ? "Private & Public" : "Public only";
+
+      // 4. Render Priority Actions
+      priorityList.innerHTML = "";
+      if (report.priorityFixes.length > 0 && report.findings.length > 0) {
+        priorityCard.style.display = "block";
+        report.priorityFixes.forEach(fix => {
+          const li = document.createElement("li");
+          li.className = "priority-item";
+          li.textContent = fix;
+          priorityList.appendChild(li);
+        });
+      } else {
+        priorityCard.style.display = "none";
+      }
+
+      // 5. Render Findings
+      findingsWrapper.innerHTML = "";
+      
+      if (report.findings.length === 0) {
+        findingsWrapper.innerHTML = `
+          <div class="finding-panel low" style="padding: 24px; text-align: center; border-left: 4px solid var(--accent-green)">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Clean Audit Report</h3>
+            <p style="color: var(--text-muted); font-size: 14.5px;">No active vulnerabilities or repository hygiene issues were found during the passive check. Your repository follows security best practices!</p>
+          </div>
+        `;
+        paywallOverlay.style.display = "none";
+        unlockedActions.style.display = "none";
+      } else {
+        report.findings.forEach((finding, index) => {
+          const panel = document.createElement("article");
+          panel.className = `finding-panel ${finding.risk.toLowerCase()}`;
+          
+          // Header (always visible)
+          const header = document.createElement("header");
+          header.className = "finding-header";
+          
+          const titleGroup = document.createElement("div");
+          titleGroup.className = "finding-title-group";
+          titleGroup.innerHTML = `
+            <span class="badge ${finding.risk.toLowerCase()}">${finding.risk}</span>
+            <span class="finding-title">${index + 1}. ${finding.title}</span>
+          `;
+          
+          const catTag = document.createElement("span");
+          catTag.className = "badge";
+          catTag.style.backgroundColor = "var(--bg-tertiary)";
+          catTag.style.color = "var(--text-muted)";
+          catTag.textContent = finding.category;
+          
+          header.appendChild(titleGroup);
+          header.appendChild(catTag);
+          panel.appendChild(header);
+
+          // Details Body (Blurred if locked)
+          const body = document.createElement("div");
+          body.className = "finding-body" + (isUnlocked ? "" : " paywalled");
+          
+          // Description
+          const desc = document.createElement("p");
+          desc.className = "finding-desc";
+          desc.textContent = finding.why;
+          body.appendChild(desc);
+          
+          // Evidence Code
+          const evTitle = document.createElement("h4");
+          evTitle.className = "finding-section-title";
+          evTitle.textContent = "Evidence Checked";
+          body.appendChild(evTitle);
+          
+          const evCode = document.createElement("pre");
+          evCode.className = "finding-evidence";
+          evCode.textContent = Array.isArray(finding.evidence) ? finding.evidence.join("\n") : finding.evidence;
+          body.appendChild(evCode);
+          
+          // Actionable Fix
+          const fixTitle = document.createElement("h4");
+          fixTitle.className = "finding-section-title";
+          fixTitle.textContent = "Step-By-Step Solution";
+          body.appendChild(fixTitle);
+          
+          const fixBox = document.createElement("div");
+          fixBox.className = "finding-fix";
+          fixBox.textContent = finding.fix;
+          body.appendChild(fixBox);
+
+          panel.appendChild(body);
+          findingsWrapper.appendChild(panel);
+        });
+
+        // Toggle Paywall overlays based on locked status
+        if (isUnlocked) {
+          paywallOverlay.style.display = "none";
+          unlockedActions.classList.add("visible");
+        } else {
+          paywallOverlay.style.display = "flex";
+          unlockedActions.classList.remove("visible");
+        }
+      }
+
+      dashboard.classList.add("visible");
+      
+      // Auto scroll to results
+      dashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // UPI Unlock Handler
+    btnUnlockUpi.addEventListener("click", () => {
+      const utr = upiRefInput.value.trim();
+      if (!/^\d{12}$/.test(utr)) {
+        alert("Please enter a valid 12-digit UPI Transaction Ref ID / UTR Number.");
+        return;
+      }
+      
+      if (currentScanReport) {
+        const repoKey = currentScanReport.repo.toLowerCase();
+        localStorage.setItem(`reposec_unlocked_${repoKey}`, "true");
+        localStorage.setItem(`reposec_upi_utr_${repoKey}`, utr);
+        showToast("Payment verified. Report unlocked!");
+        renderReport(currentScanReport);
+      }
+    });
+
+    // Gumroad/LemonSqueezy Checkout Trigger
+    btnCheckoutTrigger.addEventListener("click", () => {
+      if (!currentScanReport) return;
+      
+      const repoUrl = currentScanReport.repo;
+      // Setup external payment checkout URL passing current repo URL as query param
+      // Once purchase is completed, Lemon Squeezy redirects back to:
+      // https://reposec.site/?unlock=true&repo=owner/repo
+      const paymentUrl = `https://sajidofaspire.lemonsqueezy.com/checkout/buy/reposec-mini-audit?media=0&checkout[custom][repo]=${encodeURIComponent(repoUrl)}&checkout[redirect_url]=${encodeURIComponent(window.location.origin + window.location.pathname + '?unlock=true&repo=' + repoUrl)}`;
+      
+      window.location.href = paymentUrl;
+    });
+
+    // Simulated Checkout (Sandbox Bypass for Testing)
+    btnSimulateCheckout.addEventListener("click", () => {
+      if (!currentScanReport) return;
+      const repoUrl = currentScanReport.repo;
+      window.location.href = `${window.location.origin}${window.location.pathname}?unlock=true&repo=${repoUrl}`;
+    });
+
+    // Report Actions (Markdown copy)
+    document.getElementById("btn-copy-md").addEventListener("click", () => {
+      if (!currentScanReport) return;
+      
+      const rep = currentScanReport;
+      let md = `# RepoSec Scan Report for ${rep.repo}\n`;
+      md += `Date: ${rep.scannedAt} | Security Score: ${rep.score}/100\n\n`;
+      
+      md += `## Evidence Audited\n`;
+      rep.evidence.forEach(ev => { md += `- ${ev.replace(/\*\*/g, '')}\n`; });
+      md += `\n`;
+      
+      md += `## Findings & Hardening Recommendations\n\n`;
+      rep.findings.forEach((finding, idx) => {
+        md += `### ${idx + 1}. ${finding.title} [Risk: ${finding.risk}]\n`;
+        md += `- **Category**: ${finding.category}\n`;
+        md += `- **Why**: ${finding.why}\n`;
+        md += `- **Evidence Checked**:\n\`\`\`\n${Array.isArray(finding.evidence) ? finding.evidence.join('\n') : finding.evidence}\n\`\`\`\n`;
+        md += `- **Fix Instructions**: ${finding.fix}\n\n`;
+      });
+      
+      copyText(md);
+    });
+
+    // Report Actions (Print PDF)
+    document.getElementById("btn-print").addEventListener("click", () => {
+      window.print();
+    });
+
+    // Check for success redirects on mount
+    function checkUnlockRedirect() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const unlockParam = urlParams.get('unlock');
+      const repoParam = urlParams.get('repo');
+      
+      if (unlockParam === 'true' && repoParam) {
+        const cleanRepo = repoParam.trim().toLowerCase();
+        localStorage.setItem(`reposec_unlocked_${cleanRepo}`, "true");
+        
+        // Populate inputs
+        repoUrlInput.value = repoParam;
+        
+        // Clean URL parameters cleanly so refreshing doesn't re-trigger
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Trigger automated scan execution for the user
+        showToast("Purchase successful! Executing scan...");
+        btnScan.click();
+      }
+    }
+    
+    // Auto-run mount check
+    checkUnlockRedirect();
   </script>
 </body>
 </html>
