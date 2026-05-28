@@ -455,139 +455,65 @@
       const url = state.url || "https://reposec.site";
       const requestUrl = `${url.replace(/\/+$/, "")}/request.html`;
       const templates = {
-        short: `Do you have one public GitHub repo you own and want checked?
+        short: `I built RepoGotchi: a virtual Tamagotchi pet for your GitHub Profile README that feeds on your coding commits and evolves based on your programming languages! Hatch yours at:
+${url}`,
+        warm: `Hey, do you have a custom GitHub Profile README? 
 
-I am doing a passive Repo Security Mini-Audit: dependencies, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot, and 5 fixes.
+I just built a cute tool to adopt a virtual Tamagotchi pet that lives inside your README! It grows as you code, and changes type (Web, System, Data, Cloud) depending on what languages you commit in. 
 
-Preview first. Final checklist/report is INR 149 after UPI payment. No login testing or production probing.
+Hatch yours here:
+${url}`,
+        founder: `Quick share: I made a fun tool called RepoGotchi to gamify your GitHub contribution streak. It embeds a virtual pet directly on your profile README that sleeps when you rest and grows when you push commits. 
 
-Reply REPO or use the request form:
-${requestUrl}`,
-        warm: `Do you have a public GitHub repo or small app repo you want checked quickly?
+Adopt it here:
+${url}`,
+        student: `If you want your GitHub profile to stand out to recruiters, I built a cute virtual pet that sits in your Profile README and grows as you commit! 
 
-I made a small page for the INR 149 Repo Security Mini-Audit:
-${url}
-Request form:
-${requestUrl}
+Check it out:
+${url}`,
+        actions: `Quick one: if you want a cool GitHub Action project, I built RepoGotchi—a Tamagotchi pet for your profile README that auto-updates via a simple workflow cron job! 
 
-I can safely review dependency risk, exposed-secret patterns, GitHub Actions permissions, missing SECURITY.md / Dependabot setup, and 5 prioritized hardening fixes.
+Adopt it here:
+${url}`,
+        ask: `Do you have a custom GitHub Profile README yet? 
 
-Only for repos you own or have permission to share. No hacking, no login testing, no production probing.
+I built a cute virtual pet that you can embed in it to track your commit streak! It levels up as you code. 
 
-I can send a small preview first. Final checklist/report after UPI payment.
+Hatch yours:
+${url}`,
+        permission: `Can I share a fun open-source project here? 
 
-Reply REPO with the repo link, or submit it through the request form.`,
-        founder: `Quick one: before you hand a repo to a client or launch it, I can do a small passive security hygiene check.
+I built RepoGotchi—a virtual Tamagotchi pet for your GitHub Profile README that feeds on your commits! 
 
-Details: ${url}
-Request form: ${requestUrl}
+Details:
+${url}`,
+        public: `Adopted my RepoGotchi today! 👾 It feeds on my commits and lives directly in my GitHub Profile README. 
 
-INR 149 for one GitHub repo/app folder. I check dependency posture, accidental secret patterns, GitHub Actions permissions, SECURITY.md/Dependabot gaps, and send 5 prioritized fixes.
+Hatch yours at:
+${url}`,
+        follow2h: `Small bump on this. You can adopt your pet and play with it entirely in your browser first before claiming the README badge!
 
-I send a preview first. Final report after UPI payment.
+${url}`,
+        followEvening: `Gotchi check! Keep your streak active to feed your README pet. 
 
-Only repos you own or have permission to share.`,
-        student: `If you have a GitHub project you plan to share for internships, college, or clients, I can do a quick repo security hygiene review.
+Check stats:
+${url}`,
+        followNextDay: `Hatch a RepoGotchi for your GitHub profile README. Streak counts keep it healthy!
 
-Page: ${url}
-Request form: ${requestUrl}
-
-INR 149. I check dependency risk, secret-like patterns, GitHub Actions permissions, missing SECURITY.md/Dependabot, and give 5 fixes.
-
-No hacking or login testing. Passive review only. Preview first, final report after UPI.`,
-        actions: `Quick one: if you have a repo using GitHub Actions, I can do a passive mini-audit focused on workflow permissions and repo hygiene.
-
-Details: ${url}
-Request form: ${requestUrl}
-
-INR 149 for one repo/app folder. I check dependency risk, accidental secret patterns, GitHub Actions permission posture, SECURITY.md/Dependabot gaps, and 5 prioritized fixes.
-
-Preview first. Final checklist/report after UPI payment.
-
-Only repos you own or have permission to share. No login testing or production probing.`,
-        ask: `Quick question: do you currently have a public GitHub repo or app folder for your site/project?
-
-I am doing one INR 149 Repo Security Mini-Audit today:
-${url}
-
-Request form:
-${requestUrl}
-
-It is a passive review only: dependency posture, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot basics, and 5 prioritized fixes.
-
-Preview first. Final report after UPI payment.`,
-        permission: `Can I share a small paid dev-help slot here?
-
-I am doing one INR 149 Repo Security Mini-Audit today for a GitHub repo/app folder the owner has permission to submit.
-
-Details: ${url}
-Request form: ${requestUrl}
-
-Passive review only: dependencies, secret-like patterns, GitHub Actions permissions, SECURITY.md/Dependabot, and 5 fixes. No hacking, no login testing, no production probing.`,
-        public: `Doing one INR 149 Repo Security Mini-Audit today.
-
-For one GitHub repo/app folder you own or have permission to share:
-- dependency and lockfile risk
-- accidental secret pattern scan
-- GitHub Actions permissions
-- SECURITY.md / Dependabot gaps
-- 5 prioritized fixes
-
-Preview first. Final checklist after UPI payment.
-
-${url}
-Request form: ${requestUrl}`,
-        follow2h: `Small bump on this.
-
-If you have even one public GitHub repo, I can do the passive preview first and you can decide after seeing whether it is useful:
-${url}
-
-Request form:
-${requestUrl}`,
-        followEvening: `I am keeping one INR 149 Repo Security Mini-Audit slot open today.
-
-If you send a repo you own or are allowed to share, I will check whether it fits and send a tiny preview first. No login testing, no production probing.
-
-${url}
-Request form: ${requestUrl}`,
-        followNextDay: `Last follow-up on this from me.
-
-If you do not need the repo check, no issue. If you know one dev/founder/student with a GitHub project, you can forward this:
-${url}
-
-Request form:
-${requestUrl}
-
-I am doing the first useful preview before asking for UPI.`,
-        safe: `Yes. It is passive only.
-
-I will not log in, run attacks, probe production, bypass access, or ask for passwords/OTP/UPI PIN/private keys.
-
-I only review repo files/configs you own or have permission to share.`,
-        sample: `Sample preview is here:
-${url.replace(/\/+$/, "")}/repo-security-499-demo-buyer-preview.md
-
-The final report is customized to your repo after the preview/payment flow.`,
-        free: `I can send the short preview free.
-
-The full prioritized checklist/report is the paid INR 149 part after you approve the preview.`,
-        repo: `Great. Please confirm:
-
-1. You own this repo or have permission to request a review.
-2. Passive repo review only is okay.
-3. You want the INR 149 mini-audit report after payment.
-
-Send the public repo link or a safe local zip.`,
-        payment: `This fits the INR 149 Repo Security Mini-Audit slot.
+Adopt:
+${url}`,
+        safe: `Yes, it is 100% safe. The game runs client-side and counts public commits via the GitHub API. No passwords, private keys, or code uploads required.`,
+        sample: `You can see a live pet preview directly on reposec.site by entering any public GitHub username!`,
+        free: `Adopting and playing with the pet in your browser is 100% free. Unlocking custom wardrobes (wizard hats, crowns, swords) and the README badge YAML is a one-time INR 149 / $2.99 checkout.`,
+        repo: `Great. Just enter your GitHub username on reposec.site and it will scan your commits to hatch your pet!`,
+        payment: `Unlock RepoGotchi README Badge & Wardrobe.
 
 UPI ID: sajidofaspire@oksbi
 Amount: INR 149
-Note: Repo Security Mini Audit
+Note: RepoGotchi README Unlock
 
-Once payment is received, I will send the final checklist/report.`,
-        refusal: `I cannot help with hacking, bypassing access, login testing, scraping private data, malware, credential theft, OTP/UPI PIN handling, or attacking a third-party target.
-
-I can only do a passive review for a repo you own or have permission to share.`
+Once payment is complete, enter your UTR/Ref ID in the form to unlock instantly.`,
+        refusal: `RepoGotchi only reads public commit history for stats calculation. We do not write to your repos or request password access.`
       };
       return templates[name] || templates.short;
     }

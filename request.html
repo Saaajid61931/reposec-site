@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RepoSec - Settings & Scan History Vault</title>
-  <meta name="description" content="Manage your local GitHub tokens, scan history, and unlocked security reports.">
+  <title>RepoGotchi - Settings & Wardrobe Vault</title>
+  <meta name="description" content="Manage your local GitHub tokens, adopted virtual pets, and wardrobe settings.">
   
   <!-- Web Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -29,6 +29,7 @@
       --risk-high: #dc2626;
       --risk-high-bg: #fef2f2;
       
+      --font-display: 'Outfit', 'Inter', sans-serif;
       --font-sans: 'Inter', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
@@ -84,8 +85,9 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--font-display);
       font-weight: 800;
-      font-size: 20px;
+      font-size: 22px;
       letter-spacing: -0.5px;
     }
 
@@ -98,6 +100,7 @@
       border-radius: 99px;
       text-transform: uppercase;
       border: 1px solid var(--border-thin);
+      font-family: var(--font-sans);
     }
 
     .btn-nav-back {
@@ -119,7 +122,8 @@
     }
 
     .section-card h2 {
-      font-size: 18px;
+      font-family: var(--font-display);
+      font-size: 20px;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-bottom: 16px;
@@ -135,7 +139,6 @@
       line-height: 1.5;
     }
 
-    /* Token settings form elements */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -144,7 +147,7 @@
     }
 
     .form-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -185,7 +188,7 @@
     }
 
     .btn-primary:hover {
-      background-color: #044e39;
+      background-color: var(--accent-green-hover);
     }
 
     .btn-outline-danger {
@@ -204,7 +207,7 @@
       background-color: var(--risk-high-bg);
     }
 
-    /* History & Report List items */
+    /* List items */
     .list-wrapper {
       border: 1px solid var(--border-thin);
       border-radius: var(--radius-md);
@@ -265,7 +268,6 @@
       font-weight: 500;
     }
 
-    /* Toast styling */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -294,22 +296,22 @@
   <nav class="navbar">
     <div class="container navbar-inner">
       <a href="index.html" class="brand">
-        RepoSec <span>Scanner</span>
+        RepoGotchi <span>PET</span>
       </a>
       <a href="index.html" class="btn-nav-back">
-        ← Back to Scanner
+        ← Back to Dashboard
       </a>
     </div>
   </nav>
 
   <main class="container">
     
-    <!-- Token Configuration Vault -->
+    <!-- Token Configuration -->
     <section class="section-card">
-      <h2>GitHub Security Vault</h2>
+      <h2>GitHub Credentials Token</h2>
       <p>
-        To scan private repositories or remove GitHub API rate restrictions (60 checks/hour), you can supply a Personal Access Token. 
-        Your token is saved securely in your browser's local sandbox storage and never passes through our systems.
+        If you want RepoGotchi to scan private repositories when computing contribution streaks and levels, supply a Personal Access Token (PAT). 
+        The token remains client-side inside your browser's private vault and is only sent directly to GitHub.
       </p>
       
       <div class="form-group">
@@ -320,16 +322,16 @@
       <div class="btn-actions">
         <button type="button" id="btn-save-token" class="btn-primary">Save Token</button>
         <button type="button" id="btn-clear-token" class="btn-outline-danger">Clear Token</button>
-        <a href="https://github.com/settings/tokens/new?description=RepoSec%20Browser%20Scanner&scopes=repo" target="_blank" class="btn-primary" style="display:inline-flex; align-items:center; background-color: transparent; border: 1px solid var(--border-thick); color: var(--text-main);">
+        <a href="https://github.com/settings/tokens/new?description=RepoGotchi%20Browser%20Token&scopes=repo" target="_blank" class="btn-primary" style="display:inline-flex; align-items:center; background-color: transparent; border: 1px solid var(--border-thick); color: var(--text-main);">
           Generate Read-Only Token ↗
         </a>
       </div>
     </section>
 
-    <!-- Unlocked Reports Dashboard -->
+    <!-- Adopted Gotchi List -->
     <section class="section-card">
-      <h2>Unlocked Reports</h2>
-      <p>Here are the repositories you have unlocked via UPI or Card payments. Click any entry to reload the full details immediately.</p>
+      <h2>Adopted README Pets</h2>
+      <p>Here are the developer Gotchis you have unlocked with premium features (custom wardrobes and README badge URLs).</p>
       
       <div class="list-wrapper">
         <div id="unlocked-list" class="list-container">
@@ -338,12 +340,12 @@
       </div>
     </section>
 
-    <!-- General Settings Actions -->
+    <!-- Database wiping -->
     <section class="section-card">
-      <h2>Database Management</h2>
-      <p>Clear cached scanning states and unlocked reports stored locally in your browser cache.</p>
+      <h2>System Management</h2>
+      <p>Completely clear all cached streaks, histories, and unlocked wardrobes stored locally in your browser storage.</p>
       <button type="button" id="btn-clear-history" class="btn-outline-danger">
-        Reset & Wipe All History
+        Reset & Wipe All Gotchi History
       </button>
     </section>
 
@@ -359,7 +361,6 @@
     const btnClearHistory = document.getElementById("btn-clear-history");
     const toast = document.getElementById("toast");
 
-    // Show toast message
     function showToast(message) {
       toast.textContent = message;
       toast.classList.add("show");
@@ -375,40 +376,39 @@
     btnSaveToken.addEventListener("click", () => {
       const val = vaultToken.value.trim();
       if (!val) {
-        alert("Please enter a token value before saving.");
+        alert("Please enter a token before saving.");
         return;
       }
       localStorage.setItem("reposec_pat_token", val);
-      showToast("GitHub token saved securely.");
+      showToast("GitHub Token saved securely.");
     });
 
     // Clear Token
     btnClearToken.addEventListener("click", () => {
       localStorage.removeItem("reposec_pat_token");
       vaultToken.value = "";
-      showToast("GitHub token removed.");
+      showToast("GitHub Token removed.");
     });
 
-    // Populate Unlocked List
-    function populateUnlocked() {
+    // Populate Adopted Pets
+    function populateAdopted() {
       unlockedList.innerHTML = "";
-      const unlockedRepos = [];
+      const unlockedUsers = [];
       
-      // Query localStorage
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key.startsWith("reposec_unlocked_")) {
-          const repoName = key.replace("reposec_unlocked_", "");
-          unlockedRepos.push(repoName);
+          const username = key.replace("reposec_unlocked_", "");
+          unlockedUsers.push(username);
         }
       }
 
-      if (unlockedRepos.length === 0) {
-        unlockedList.innerHTML = `<div class="empty-state">No repositories unlocked yet.</div>`;
+      if (unlockedUsers.length === 0) {
+        unlockedList.innerHTML = `<div class="empty-state">No Adopted Pets found in this browser.</div>`;
         return;
       }
 
-      unlockedRepos.forEach(repo => {
+      unlockedUsers.forEach(username => {
         const item = document.createElement("div");
         item.className = "list-item";
         
@@ -417,22 +417,21 @@
         
         const title = document.createElement("div");
         title.className = "item-title";
-        title.textContent = repo;
+        title.textContent = username;
         
         const sub = document.createElement("div");
         sub.className = "item-subtitle";
         
-        // Check check type
-        const utr = localStorage.getItem(`reposec_upi_utr_${repo}`);
-        sub.textContent = utr ? `Unlocked via UPI (UTR: ${utr})` : "Unlocked via Checkout Card";
+        const utr = localStorage.getItem(`reposec_upi_utr_${username}`);
+        sub.textContent = utr ? `Unlocked via India UPI (UTR: ${utr})` : "Unlocked via Checkout Card";
         
         meta.appendChild(title);
         meta.appendChild(sub);
         
         const action = document.createElement("a");
         action.className = "btn-link-action";
-        action.href = `index.html?unlock=true&repo=${encodeURIComponent(repo)}`;
-        action.innerHTML = `View Report ➔`;
+        action.href = `index.html?unlock=true&repo=${encodeURIComponent(username)}`;
+        action.innerHTML = `View Gotchi ➔`;
         
         item.appendChild(meta);
         item.appendChild(action);
@@ -440,10 +439,9 @@
       });
     }
 
-    // Clear All cache history
+    // Reset History
     btnClearHistory.addEventListener("click", () => {
-      if (confirm("Are you sure you want to reset all data? This will clear all local tokens, cached scan histories, and unlocked reports. This action cannot be undone.")) {
-        // Find and remove all reposec entries
+      if (confirm("Are you sure you want to reset your local dashboard? This will remove all saved GitHub tokens, adopted README badges, and wardrobe states.")) {
         const keysToRemove = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
@@ -453,13 +451,12 @@
         }
         keysToRemove.forEach(k => localStorage.removeItem(k));
         vaultToken.value = "";
-        showToast("All local database records wiped.");
-        populateUnlocked();
+        showToast("All Gotchi states wiped clean.");
+        populateAdopted();
       }
     });
 
-    // Run mount populate
-    populateUnlocked();
+    populateAdopted();
   </script>
 </body>
 </html>

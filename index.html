@@ -3,46 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RepoSec - Automated Client-Side Repository Security Scanner</title>
-  <meta name="description" content="Secure your GitHub repository in 5 seconds client-side. Check for unpinned actions, loose dependencies, committed env files, and secrets.">
+  <title>RepoGotchi - The GitHub Profile README Tamagotchi</title>
+  <meta name="description" content="Hatch and evolve a virtual pet powered by your GitHub coding commits. Embed it in your profile README to show off your streak!">
   
   <!-- Web Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* Colors: Stripe/Linear-Style Clean Light Mode */
+      /* Palette: Clean Minimalist Light Mode with Forest Green Accents */
       --bg-base: #ffffff;
-      --bg-canvas: #fafafa;
+      --bg-canvas: #fcfcfc;
       --bg-card: #ffffff;
       --bg-input: #ffffff;
       
-      --text-main: #111827; /* Near black */
-      --text-muted: #4b5563; /* Medium gray */
-      --text-light: #6b7280; /* Soft gray */
+      --text-main: #111827; 
+      --text-muted: #4b5563; 
+      --text-light: #6b7280; 
       
       --border-thin: #e5e7eb;
       --border-thick: #111827;
       
-      --accent-green: #065f46;      /* Deep Forest Green */
+      --accent-green: #065f46;      
       --accent-green-bg: #ecfdf5;
       --accent-green-hover: #044e39;
+      --accent-green-border: #a7f3d0;
       
-      --risk-high: #dc2626;         /* Red */
+      --risk-high: #dc2626;         
       --risk-high-bg: #fef2f2;
-      --risk-medium: #d97706;       /* Yellow/Orange */
+      --risk-medium: #d97706;       
       --risk-medium-bg: #fffbeb;
-      --risk-low: #2563eb;          /* Blue */
+      --risk-low: #2563eb;          
       --risk-low-bg: #eff6ff;
       
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-display: 'Outfit', 'Inter', sans-serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
       --radius-sm: 4px;
       --radius-md: 6px;
-      --radius-lg: 10px;
+      --radius-lg: 12px;
       
       --transition-fast: 0.15s ease;
     }
@@ -74,7 +76,7 @@
       padding: 0 24px;
     }
 
-    /* Navbar styling */
+    /* Navbar */
     .navbar {
       height: 72px;
       border-bottom: 1px solid var(--border-thin);
@@ -97,8 +99,9 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--font-display);
       font-weight: 800;
-      font-size: 20px;
+      font-size: 22px;
       letter-spacing: -0.5px;
     }
 
@@ -111,13 +114,14 @@
       border-radius: 99px;
       text-transform: uppercase;
       border: 1px solid var(--border-thin);
+      font-family: var(--font-sans);
     }
 
     .nav-links {
       display: flex;
       gap: 20px;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-muted);
     }
 
@@ -125,14 +129,15 @@
       color: var(--text-main);
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
       text-align: center;
-      padding: 56px 0 40px;
+      padding: 56px 0 32px;
     }
 
     .hero h1 {
-      font-size: clamp(32px, 5vw, 54px);
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5vw, 56px);
       font-weight: 800;
       letter-spacing: -1.5px;
       line-height: 1.1;
@@ -140,24 +145,24 @@
     }
 
     .hero p {
-      font-size: clamp(16px, 2.2vw, 19px);
+      font-size: clamp(15.5px, 2vw, 18px);
       color: var(--text-muted);
       max-width: 680px;
-      margin: 0 auto 32px;
+      margin: 0 auto;
       font-weight: 450;
     }
 
-    /* Interactive Scanner Card */
-    .scanner-card {
+    /* Input Adoption Box */
+    .adopt-card {
       background-color: var(--bg-card);
       border: 2px solid var(--border-thick);
       border-radius: var(--radius-lg);
       padding: 24px;
       box-shadow: 4px 4px 0px rgba(17, 24, 32, 0.08);
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
 
-    .scanner-form {
+    .adopt-form {
       display: flex;
       gap: 12px;
       position: relative;
@@ -174,13 +179,13 @@
       position: absolute;
       left: 16px;
       color: var(--text-light);
-      font-weight: 500;
+      font-weight: 600;
       font-size: 14px;
       font-family: var(--font-mono);
       pointer-events: none;
     }
 
-    .url-input {
+    .username-input {
       width: 100%;
       height: 52px;
       padding: 0 16px 0 108px;
@@ -188,13 +193,13 @@
       border-radius: var(--radius-md);
       font-family: var(--font-sans);
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 600;
       outline: none;
       background-color: var(--bg-input);
       transition: box-shadow var(--transition-fast);
     }
 
-    .url-input:focus {
+    .username-input:focus {
       box-shadow: 0 0 0 3px var(--accent-green-bg);
       border-color: var(--accent-green);
     }
@@ -209,7 +214,6 @@
       border-radius: var(--radius-md);
       background-color: var(--bg-base);
       cursor: pointer;
-      transition: background-color var(--transition-fast);
     }
 
     .btn-settings:hover {
@@ -229,7 +233,7 @@
       padding: 0 24px;
       background-color: var(--accent-green);
       color: #ffffff;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 15px;
       border: 1px solid var(--border-thick);
       border-radius: var(--radius-md);
@@ -244,7 +248,7 @@
       background-color: var(--accent-green-hover);
     }
 
-    /* Advanced Settings Panel */
+    /* Advanced Settings */
     .settings-panel {
       margin-top: 16px;
       padding-top: 16px;
@@ -280,18 +284,14 @@
       outline: none;
     }
 
-    .token-input:focus {
-      border-color: var(--text-main);
-    }
-
     .token-help {
       font-size: 12px;
       color: var(--text-light);
       line-height: 1.4;
     }
 
-    /* Scanner Console Logs */
-    .scanner-logs {
+    /* Interactive Logs */
+    .logs-console {
       margin-top: 16px;
       background-color: var(--bg-canvas);
       border: 1px solid var(--border-thin);
@@ -304,7 +304,7 @@
       display: none;
     }
 
-    .scanner-logs.visible {
+    .logs-console.visible {
       display: block;
     }
 
@@ -316,13 +316,8 @@
       gap: 8px;
     }
 
-    .log-line.success {
-      color: var(--accent-green);
-    }
-
-    .log-line.error {
-      color: var(--risk-high);
-    }
+    .log-line.success { color: var(--accent-green); }
+    .log-line.error { color: var(--risk-high); }
 
     .log-spinner {
       width: 12px;
@@ -333,16 +328,13 @@
       animation: spin 0.8s linear infinite;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Results Dashboard Grid */
+    /* Gotchi Play Pen Dashboard */
     .dashboard {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 360px 1fr;
       gap: 32px;
-      margin-top: 24px;
       display: none;
     }
 
@@ -350,217 +342,231 @@
       display: grid;
     }
 
-    .sidebar {
+    .playpen {
       display: flex;
       flex-direction: column;
       gap: 24px;
     }
 
-    .score-card {
+    .cage-card {
       background-color: var(--bg-card);
-      border: 1px solid var(--border-thin);
+      border: 2px solid var(--border-thick);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      overflow: hidden;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 4px 4px 0px rgba(17, 24, 32, 0.06);
+    }
+
+    .cage-viewport {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 16px;
+      background-color: #fafafa;
+    }
+
+    /* Stats monitors */
+    .gotchi-stat-bar {
+      margin-bottom: 12px;
+    }
+
+    .stat-label-group {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .bar-outer {
+      height: 8px;
+      background-color: var(--bg-tertiary);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid var(--border-thin);
+    }
+
+    .bar-inner {
+      height: 100%;
+      background-color: var(--accent-green);
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    .bar-inner.health {
+      background-color: var(--risk-high);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .meta-pill {
+      background-color: var(--bg-canvas);
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 13px;
       text-align: center;
     }
 
-    .score-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-light);
-      margin-bottom: 16px;
-    }
-
-    .score-gauge-wrapper {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin: 0 auto 16px;
-    }
-
-    .score-gauge {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-    }
-
-    .score-gauge-bg {
-      fill: none;
-      stroke: var(--bg-tertiary);
-      stroke-width: 10;
-    }
-
-    .score-gauge-fill {
-      fill: none;
-      stroke: var(--accent-green);
-      stroke-width: 10;
-      stroke-linecap: round;
-      stroke-dasharray: 408.4; /* 2 * PI * 65 */
-      stroke-dashoffset: 408.4;
-      transition: stroke-dashoffset 1s ease-out;
-    }
-
-    .score-value {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 38px;
-      font-weight: 800;
-      letter-spacing: -1px;
+    .meta-pill strong {
+      display: block;
+      font-size: 16px;
       color: var(--text-main);
+      font-family: var(--font-mono);
     }
 
-    .score-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .meta-card {
+    /* Dressing Room (Wardrobe) */
+    .wardrobe-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-thin);
       border-radius: var(--radius-lg);
       padding: 20px;
-      font-size: 13px;
     }
 
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--bg-tertiary);
+    .wardrobe-card h3 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
     }
 
-    .meta-row:last-child {
-      border-bottom: none;
+    .dressing-section {
+      margin-bottom: 16px;
     }
 
-    .meta-label {
+    .dressing-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .dressing-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
       color: var(--text-light);
-      font-weight: 500;
+      margin-bottom: 8px;
     }
 
-    .meta-value {
-      color: var(--text-main);
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .btn-item {
+      height: 38px;
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-base);
+      font-size: 12px;
       font-weight: 600;
-      max-width: 180px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
-    .findings-container {
+    .btn-item:hover {
+      background-color: var(--bg-canvas);
+      border-color: var(--border-thick);
+    }
+
+    .btn-item.active {
+      background-color: var(--text-main);
+      color: var(--bg-base);
+      border-color: var(--text-main);
+    }
+
+    .btn-item.locked::after {
+      content: "🔒";
+      font-size: 9px;
+    }
+
+    /* Integration Panel & Code displays */
+    .integration-container {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
       position: relative;
     }
 
-    /* Findings Panel cards */
-    .finding-panel {
+    .code-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-thin);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      border-radius: var(--radius-lg);
+      padding: 24px;
     }
 
-    .finding-panel.high { border-left: 4px solid var(--risk-high); }
-    .finding-panel.medium { border-left: 4px solid var(--risk-medium); }
-    .finding-panel.low { border-left: 4px solid var(--risk-low); }
+    .code-card h3 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
 
-    .finding-header {
-      padding: 16px 20px;
+    .code-card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .code-box {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border-thin);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      resize: none;
+      outline: none;
+    }
+
+    .btn-action-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: var(--bg-card);
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-copy {
+      height: 36px;
+      padding: 0 14px;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      border: 1px solid var(--border-thick);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 12.5px;
       cursor: pointer;
     }
 
-    .finding-title-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .finding-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .badge.high { background-color: var(--risk-high-bg); color: var(--risk-high); }
-    .badge.medium { background-color: var(--risk-medium-bg); color: var(--risk-medium); }
-    .badge.low { background-color: var(--risk-low-bg); color: var(--risk-low); }
-
-    .finding-body {
-      padding: 0 20px 20px;
-      border-top: 1px solid var(--bg-tertiary);
-      background-color: var(--bg-card);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .finding-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-top: 14px;
-    }
-
-    .finding-section-title {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-light);
-      margin-top: 8px;
-    }
-
-    .finding-evidence {
+    .btn-copy:hover {
       background-color: var(--bg-canvas);
-      border: 1px solid var(--border-thin);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-main);
-      overflow-x: auto;
-      max-height: 150px;
     }
 
-    .finding-fix {
-      background-color: var(--accent-green-bg);
-      border: 1px solid var(--accent-green-border);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      font-size: 13.5px;
-      color: var(--accent-green);
-      line-height: 1.45;
-    }
-
-    /* Paywall Blur Mask */
+    /* Paywall overlay blurs */
     .paywalled {
       filter: blur(8px);
       pointer-events: none;
       user-select: none;
     }
 
-    /* Paywall Overlay */
     .paywall-overlay {
       position: absolute;
       top: 0;
@@ -571,23 +577,24 @@
       display: flex;
       justify-content: center;
       padding-top: 60px;
-      background: linear-gradient(to bottom, rgba(250, 250, 250, 0) 0%, rgba(250, 250, 250, 0.95) 280px, rgba(250, 250, 250, 1) 100%);
+      background: linear-gradient(to bottom, rgba(252, 252, 252, 0) 0%, rgba(252, 252, 252, 0.95) 240px, rgba(252, 252, 252, 1) 100%);
     }
 
     .paywall-card {
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
       background-color: var(--bg-card);
       border: 2px solid var(--border-thick);
       border-radius: var(--radius-lg);
       padding: 32px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
       height: fit-content;
       text-align: center;
     }
 
     .paywall-card h3 {
-      font-size: 21px;
+      font-family: var(--font-display);
+      font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-bottom: 8px;
@@ -597,10 +604,9 @@
       font-size: 14px;
       color: var(--text-muted);
       margin-bottom: 24px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
-    /* Paywall Tabs */
     .pay-tabs {
       display: flex;
       border-bottom: 1px solid var(--border-thin);
@@ -623,28 +629,23 @@
       border-bottom-color: var(--border-thick);
     }
 
-    .pay-content {
-      display: none;
-    }
-
-    .pay-content.active {
-      display: block;
-    }
+    .pay-content { display: none; }
+    .pay-content.active { display: block; }
 
     .upi-instructions {
       text-align: left;
-      font-size: 13.5px;
+      font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .upi-qr-image {
       display: block;
-      width: 160px;
-      height: 160px;
+      width: 150px;
+      height: 150px;
       margin: 12px auto;
       border: 1px solid var(--border-thin);
-      padding: 8px;
+      padding: 6px;
       border-radius: var(--radius-sm);
     }
 
@@ -658,7 +659,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .btn-copy-small {
@@ -668,13 +669,11 @@
       padding: 2px 6px;
       border-radius: var(--radius-sm);
       cursor: pointer;
-      font-family: var(--font-sans);
     }
 
     .upi-input-group {
       display: flex;
       gap: 8px;
-      margin-top: 12px;
     }
 
     .upi-ref-input {
@@ -688,15 +687,11 @@
       outline: none;
     }
 
-    .upi-ref-input:focus {
-      border-color: var(--accent-green);
-    }
-
     .btn-unlock-small {
       height: 42px;
       background-color: var(--accent-green);
       color: #ffffff;
-      font-weight: 600;
+      font-weight: 700;
       padding: 0 16px;
       border: 1px solid var(--border-thick);
       border-radius: var(--radius-sm);
@@ -707,10 +702,6 @@
       background-color: var(--accent-green-hover);
     }
 
-    .gumroad-box {
-      padding: 16px 0;
-    }
-
     .btn-checkout {
       display: flex;
       align-items: center;
@@ -719,12 +710,11 @@
       height: 48px;
       background-color: var(--accent-green);
       color: white;
-      font-weight: 600;
+      font-weight: 700;
       border: 1px solid var(--border-thick);
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-size: 15px;
-      gap: 8px;
     }
 
     .btn-checkout:hover {
@@ -733,97 +723,17 @@
 
     .btn-checkout-secondary {
       margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 100%;
-      height: 40px;
+      height: 38px;
       background-color: transparent;
       color: var(--text-muted);
       border: 1px dashed var(--border-thin);
       border-radius: var(--radius-sm);
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12.5px;
     }
 
-    .btn-checkout-secondary:hover {
-      color: var(--text-main);
-      border-color: var(--border-thick);
-    }
-
-    /* Unlocked Dashboard Footer Actions */
-    .unlocked-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-thin);
-      display: none;
-    }
-
-    .unlocked-actions.visible {
-      display: flex;
-    }
-
-    .btn-action-outline {
-      height: 40px;
-      padding: 0 16px;
-      border: 1px solid var(--border-thick);
-      border-radius: var(--radius-sm);
-      background-color: var(--bg-base);
-      font-size: 13.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-action-outline:hover {
-      background-color: var(--bg-canvas);
-    }
-
-    /* Priority checklist card */
-    .priority-card {
-      background-color: var(--accent-green-bg);
-      border: 1px solid var(--accent-green-border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-    }
-
-    .priority-card h3 {
-      font-size: 14px;
-      font-weight: 750;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--accent-green);
-      margin-bottom: 12px;
-    }
-
-    .priority-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      list-style-type: none;
-    }
-
-    .priority-item {
-      font-size: 13.5px;
-      color: var(--text-main);
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-      line-height: 1.4;
-    }
-
-    .priority-item::before {
-      content: "→";
-      color: var(--accent-green);
-      font-weight: 700;
-    }
-
-    /* Bottom Info Sections (FAQs, Privacy) */
+    /* Privacy info blocks */
     .info-sections {
       margin-top: 64px;
       border-top: 1px solid var(--border-thin);
@@ -837,6 +747,7 @@
     }
 
     .info-block h3 {
+      font-family: var(--font-display);
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 12px;
@@ -848,7 +759,6 @@
       line-height: 1.6;
     }
 
-    /* Toast notification */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -864,7 +774,6 @@
       transform: translateY(100px);
       opacity: 0;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-      pointer-events: none;
     }
 
     .toast.show {
@@ -872,32 +781,11 @@
       opacity: 1;
     }
 
-    /* Print styling support */
-    @media print {
-      body { background-color: white; padding-bottom: 0; }
-      .navbar, .hero, .scanner-card, .paywall-overlay, .unlocked-actions, .info-sections {
-        display: none !important;
-      }
-      .dashboard { display: block !important; }
-      .sidebar { width: 100% !important; margin-bottom: 24px; }
-      .findings-container { filter: none !important; }
-      .finding-body { display: flex !important; }
-    }
-
-    /* Mobile responsive layouts */
     @media (max-width: 768px) {
-      .dashboard {
-        grid-template-columns: 1fr;
-      }
-      .scanner-form {
-        flex-direction: column;
-      }
-      .btn-submit {
-        justify-content: center;
-      }
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
+      .dashboard { grid-template-columns: 1fr; }
+      .adopt-form { flex-direction: column; }
+      .btn-submit { justify-content: center; }
+      .info-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -906,161 +794,207 @@
   <nav class="navbar">
     <div class="container navbar-inner">
       <a href="index.html" class="brand">
-        RepoSec <span>Scanner</span>
+        RepoGotchi <span>PET</span>
       </a>
       <div class="nav-links">
+        <a href="request.html">Wardrobe Settings</a>
         <a href="#about">Privacy Guarantee</a>
-        <a href="#faq">FAQ</a>
       </div>
     </div>
   </nav>
 
   <main class="container">
     <header class="hero">
-      <h1>Secure Your Repository in 5 Seconds</h1>
-      <p>Scan workflows, dependency ranges, ignore structures, and configurations directly in your browser. Complete privacy, zero code uploads.</p>
+      <h1>Feed Your Virtual Pet with GitHub Commits</h1>
+      <p>Hatch a unique RepoGotchi, feed it by coding, and embed a live-updating animated pet directly on your GitHub Profile README.</p>
     </header>
 
-    <!-- Scan Engine Panel -->
-    <section class="scanner-card">
-      <div class="scanner-form">
+    <!-- Hatch/Scan Username -->
+    <section class="adopt-card">
+      <div class="adopt-form">
         <div class="input-wrapper">
           <span class="github-icon-prefix">github.com/</span>
-          <input type="text" id="repo-url" class="url-input" placeholder="owner/repository" value="Saaajid61931/reposec-site">
+          <input type="text" id="username-input" class="username-input" placeholder="github_username" value="Saaajid61931">
         </div>
-        <button type="button" id="btn-toggle-settings" class="btn-settings" title="Scan settings & private repositories">
+        <button type="button" id="btn-toggle-settings" class="btn-settings" title="Private repo settings">
           <svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
-        <button type="button" id="btn-scan" class="btn-submit">
-          Scan Repository
+        <button type="button" id="btn-hatch" class="btn-submit">
+          Hatch Gotchi
         </button>
       </div>
 
-      <!-- Advanced settings panel -->
+      <!-- Settings panel -->
       <div id="settings-panel" class="settings-panel">
         <div class="form-group">
-          <label class="form-label" for="pat-token">GitHub Personal Access Token (PAT) (Optional)</label>
+          <label class="form-label" for="pat-token">GitHub Token (Optional - for private commits count)</label>
           <input type="password" id="pat-token" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx">
-          <span class="token-help">
-            Required <strong>only</strong> for private repositories or to bypass GitHub's rate limits. 
-            This token is saved locally in your browser's <code>localStorage</code> and is sent directly to GitHub's secure API. It is never uploaded to any intermediate server.
-          </span>
+          <span class="token-help">Only saved locally in your browser's vault to authenticate events requests.</span>
         </div>
       </div>
 
-      <!-- Logging console -->
-      <div id="scanner-logs" class="scanner-logs"></div>
+      <!-- Console logs -->
+      <div id="logs-console" class="logs-console"></div>
     </section>
 
-    <!-- Scan Results Dashboard -->
+    <!-- Main Gotchi dashboard -->
     <section id="dashboard" class="dashboard">
-      <div class="sidebar">
-        <!-- Circular radial score card -->
-        <article class="score-card">
-          <h3 class="score-title">Security Grade</h3>
-          <div class="score-gauge-wrapper">
-            <svg class="score-gauge" viewBox="0 0 140 140">
-              <circle class="score-gauge-bg" cx="70" cy="70" r="65"></circle>
-              <circle id="gauge-fill" class="score-gauge-fill" cx="70" cy="70" r="65"></circle>
-            </svg>
-            <div id="score-text" class="score-value">--</div>
+      <div class="playpen">
+        <!-- Live SVG viewport cage -->
+        <article class="cage-card">
+          <div id="cage-viewport" class="cage-viewport"></div>
+          
+          <!-- XP Bar -->
+          <div class="gotchi-stat-bar">
+            <div class="stat-label-group">
+              <span>XP Level Progress</span>
+              <span id="label-xp">Level 1 (0/10 XP)</span>
+            </div>
+            <div class="bar-outer">
+              <div id="bar-xp" class="bar-inner" style="width: 0%;"></div>
+            </div>
           </div>
-          <div id="score-label" class="score-label">Calculating...</div>
+
+          <!-- Health Bar -->
+          <div class="gotchi-stat-bar">
+            <div class="stat-label-group">
+              <span>Pet Health</span>
+              <span id="label-health">100% (Healthy)</span>
+            </div>
+            <div class="bar-outer">
+              <div id="bar-health" class="bar-inner health" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-pill">
+              <strong id="pill-streak">0</strong>
+              Weekly Streaks
+            </div>
+            <div class="meta-pill">
+              <strong id="pill-commits">0</strong>
+              Weekly Commits
+            </div>
+          </div>
         </article>
 
-        <!-- Priority Fix list -->
-        <article id="priority-card" class="priority-card">
-          <h3>Priority Actions</h3>
-          <ul id="priority-list" class="priority-list"></ul>
-        </article>
+        <!-- Accessories Dressing Panel -->
+        <article class="wardrobe-card">
+          <h3>Gotchi Customization</h3>
+          
+          <div class="dressing-section">
+            <div class="dressing-label">Hats & Headwear</div>
+            <div class="btn-grid">
+              <button type="button" class="btn-item active" data-acc="none">None</button>
+              <button type="button" class="btn-item locked" data-acc="wizard">Wizard</button>
+              <button type="button" class="btn-item locked" data-acc="crown">Crown</button>
+              <button type="button" class="btn-item locked" data-acc="sunglasses">Shades</button>
+            </div>
+          </div>
 
-        <!-- Metadata card -->
-        <article class="meta-card">
-          <div class="meta-row">
-            <span class="meta-label">Repository</span>
-            <span id="meta-repo" class="meta-value">--</span>
+          <div class="dressing-section">
+            <div class="dressing-label">Holdable Items</div>
+            <div class="btn-grid">
+              <button type="button" class="btn-item active" data-hold="none">None</button>
+              <button type="button" class="btn-item locked" data-hold="sword">Sword</button>
+            </div>
           </div>
-          <div class="meta-row">
-            <span class="meta-label">Scanned On</span>
-            <span id="meta-time" class="meta-value">--</span>
-          </div>
-          <div class="meta-row">
-            <span class="meta-label">API Scope</span>
-            <span id="meta-scope" class="meta-value">Public only</span>
+
+          <div class="dressing-section">
+            <div class="dressing-label">Skins & Colors</div>
+            <div class="btn-grid">
+              <button type="button" class="btn-item active" data-skin="default">Default</button>
+              <button type="button" class="btn-item locked" data-skin="cyber">Cyber</button>
+              <button type="button" class="btn-item locked" data-skin="golden">Gold</button>
+              <button type="button" class="btn-item locked" data-skin="void">Void</button>
+            </div>
           </div>
         </article>
       </div>
 
-      <!-- Findings Display Column -->
+      <!-- Right column README integration -->
       <div style="position: relative;">
-        <div id="findings-wrapper" class="findings-container"></div>
-        
-        <!-- Paywall modal container -->
+        <div id="integration-wrapper" class="integration-container">
+          
+          <!-- Markdown Box -->
+          <article class="code-card">
+            <h3>1. Copy Markdown Profile Badge</h3>
+            <p>Paste this image tag into your GitHub Profile README file to display your live RepoGotchi.</p>
+            <textarea id="code-markdown" class="code-box" readonly></textarea>
+            <div class="btn-action-row">
+              <button type="button" class="btn-copy" onclick="copyTextSelector('#code-markdown')">Copy Markdown</button>
+            </div>
+          </article>
+
+          <!-- GitHub Action YAML -->
+          <article class="code-card">
+            <h3>2. Add GitHub Action Sync Workflow</h3>
+            <p>Create a file named <code>.github/workflows/repogotchi-sync.yml</code> in your profile repo. This updates the pet SVG twice a day.</p>
+            <textarea id="code-yaml" class="code-box" readonly style="height: 180px;"></textarea>
+            <div class="btn-action-row">
+              <button type="button" class="btn-copy" onclick="copyTextSelector('#code-yaml')">Copy YAML Workflow</button>
+            </div>
+          </article>
+        </div>
+
+        <!-- Paywall Overlay -->
         <div id="paywall-overlay" class="paywall-overlay" style="display: none;">
           <article class="paywall-card">
-            <h3>Unlock Vulnerability Details</h3>
-            <p>Get exact file paths, line numbers, vulnerable snippets, and step-by-step priority fixes for all findings.</p>
+            <h3>Adopt README Gotchi & Wardrobe</h3>
+            <p>Unlock the dynamic README badge codes and all premium skins, wizard hats, crowns, and weapons in the wardrobe.</p>
             
             <div class="pay-tabs">
               <div class="pay-tab active" data-tab="tab-upi">India UPI (INR 149)</div>
               <div class="pay-tab" data-tab="tab-checkout">Global Card ($2.99)</div>
             </div>
 
-            <!-- UPI Payment Content -->
+            <!-- UPI India -->
             <div id="tab-upi" class="pay-content active">
-              <p class="upi-instructions">Scan the code in any UPI app, pay INR 149, and paste the transaction UTR number to unlock.</p>
-              <img class="upi-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi%3A%2F%2Fpay%3Fpa%3Dsajidofaspire%40oksbi%26pn%3DSajid%26am%3D149%26cu%3DINR%26tn%3DRepoSec%2520Security%2520Audit" alt="UPI Merchant QR Code">
+              <p class="upi-instructions">Scan in GPay/PhonePe, pay INR 149, and paste your UTR/Ref ID code to unlock instantly.</p>
+              <img class="upi-qr-image" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dsajidofaspire%40oksbi%26pn%3DSajid%26am%3D149%26cu%3DINR%26tn%3DRepoGotchi%2520README%2520Unlock" alt="UPI QR">
               <div class="upi-detail-box">
                 <span>sajidofaspire@oksbi</span>
-                <button type="button" class="btn-copy-small" onclick="copyText('sajidofaspire@oksbi')">Copy ID</button>
+                <button type="button" class="btn-copy-small" onclick="copyText('sajidofaspire@oksbi')">Copy</button>
               </div>
               <div class="upi-input-group">
-                <input type="text" id="upi-ref" class="upi-ref-input" placeholder="12-digit UTR/Ref No.">
+                <input type="text" id="upi-ref" class="upi-ref-input" placeholder="12-digit UTR/Ref ID">
                 <button type="button" id="btn-unlock-upi" class="btn-unlock-small">Unlock</button>
               </div>
             </div>
 
-            <!-- Lemon Squeezy/Gumroad Content -->
+            <!-- Global Lemon Squeezy -->
             <div id="tab-checkout" class="pay-content">
               <div class="gumroad-box">
-                <p>Support the scanner and get automated, instant unlock codes via Lemon Squeezy or Stripe checkout.</p>
+                <p>Adopt your README Gotchi using credit card or PayPal for instant global delivery.</p>
                 <button type="button" id="btn-checkout-trigger" class="btn-checkout">
                   Pay $2.99 & Unlock
                 </button>
                 <button type="button" id="btn-simulate-checkout" class="btn-checkout-secondary">
-                  Simulate Purchase Redirect (Sandbox Testing)
+                  Simulate Checkout (Sandbox Test Bypass)
                 </button>
               </div>
             </div>
           </article>
         </div>
-
-        <!-- Print & Export Buttons -->
-        <div id="unlocked-actions" class="unlocked-actions">
-          <button type="button" id="btn-copy-md" class="btn-action-outline">
-            Copy Markdown Report
-          </button>
-          <button type="button" id="btn-print" class="btn-action-outline">
-            Print / Save as PDF
-          </button>
-        </div>
       </div>
     </section>
 
-    <!-- Privacy details -->
+    <!-- Info Sections -->
     <section class="info-sections" id="about">
       <div class="info-grid">
         <article class="info-block">
-          <h3>Privacy & Token Guarantee</h3>
+          <h3>How to Play RepoGotchi</h3>
           <p>
-            This scanner works entirely client-side. The JavaScript runs directly in your browser and communicates only with the secure official GitHub API. 
-            We do not have a server backend, and your code, structure, and Personal Access Tokens never leave your local computer. It is 100% private and audit-safe.
+            Your pet hatches as an egg or baby. The more you commit, the more XP your pet gains to level up. 
+            If you code in JavaScript/CSS, it becomes a <strong>Web Sprite</strong>. If you code in Rust/Go, it becomes a <strong>System Golem</strong>. 
+            If you don't commit for a day, it falls asleep (enters Repose). Inactivity for days makes it sick, and eventually, it turns into a ghost.
           </p>
         </article>
-        <article class="info-block" id="faq">
-          <h3>Frequently Asked Questions</h3>
+        <article class="info-block">
+          <h3>100% Free & Privacy-Protected</h3>
           <p>
-            <strong>How is this free to scan?</strong> It is free to check your overall security grade and get a count of vulnerabilities. If your codebase has zero findings, you pay nothing. If we detect vulnerability entries, you can unlock full details for a small cup of coffee ($2.99 / INR 149).
+            The game runs client-side. We do not store your repository logs or passwords on any server. 
+            Private commits are counted locally using your Personal Access Token, which is kept entirely inside your browser's private vault.
           </p>
         </article>
       </div>
@@ -1069,69 +1003,68 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite">Copied to clipboard</div>
 
-  <!-- Application Logic Module -->
+  <!-- Script logics -->
   <script type="module">
-    import { runRepoScan, parseGitHubUrl } from './scanner.js';
+    import { fetchGotchiData, computeGotchiState, generateGotchiSVG } from './gotchi.js';
 
-    // UI Nodes
-    const repoUrlInput = document.getElementById("repo-url");
-    const btnScan = document.getElementById("btn-scan");
+    const usernameInput = document.getElementById("username-input");
+    const btnHatch = document.getElementById("btn-hatch");
     const btnToggleSettings = document.getElementById("btn-toggle-settings");
     const settingsPanel = document.getElementById("settings-panel");
     const patTokenInput = document.getElementById("pat-token");
-    const scannerLogs = document.getElementById("scanner-logs");
+    const logsConsole = document.getElementById("logs-console");
     
     const dashboard = document.getElementById("dashboard");
-    const scoreText = document.getElementById("score-text");
-    const scoreLabel = document.getElementById("score-label");
-    const gaugeFill = document.getElementById("gauge-fill");
+    const cageViewport = document.getElementById("cage-viewport");
     
-    const priorityList = document.getElementById("priority-list");
-    const priorityCard = document.getElementById("priority-card");
-    const metaRepo = document.getElementById("meta-repo");
-    const metaTime = document.getElementById("meta-time");
-    const metaScope = document.getElementById("meta-scope");
+    const labelXp = document.getElementById("label-xp");
+    const barXp = document.getElementById("bar-xp");
+    const labelHealth = document.getElementById("label-health");
+    const barHealth = document.getElementById("bar-health");
     
-    const findingsWrapper = document.getElementById("findings-wrapper");
+    const pillStreak = document.getElementById("pill-streak");
+    const pillCommits = document.getElementById("pill-commits");
+    
+    const codeMarkdown = document.getElementById("code-markdown");
+    const codeYaml = document.getElementById("code-yaml");
+    
     const paywallOverlay = document.getElementById("paywall-overlay");
-    const unlockedActions = document.getElementById("unlocked-actions");
+    const integrationWrapper = document.getElementById("integration-wrapper");
     
-    const upiRefInput = document.getElementById("upi-ref");
+    const upiRef = document.getElementById("upi-ref");
     const btnUnlockUpi = document.getElementById("btn-unlock-upi");
     const btnCheckoutTrigger = document.getElementById("btn-checkout-trigger");
     const btnSimulateCheckout = document.getElementById("btn-simulate-checkout");
     const toast = document.getElementById("toast");
 
-    let currentScanReport = null;
+    let currentGotchiState = null;
+    let selectedSkin = "default";
+    let selectedAcc = "none";
+    let selectedHold = "none";
 
-    // Load credentials from storage
+    // Load configurations from storage
     if (localStorage.getItem("reposec_pat_token")) {
       patTokenInput.value = localStorage.getItem("reposec_pat_token");
     }
 
-    // Toggle settings panel
     btnToggleSettings.addEventListener("click", () => {
       settingsPanel.classList.toggle("visible");
     });
 
-    // Save token on edit
     patTokenInput.addEventListener("input", () => {
       localStorage.setItem("reposec_pat_token", patTokenInput.value.trim());
     });
 
-    // Toggle pay tabs
+    // Pay tabs toggle
     document.querySelectorAll(".pay-tab").forEach(tab => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".pay-tab").forEach(t => t.classList.remove("active"));
         document.querySelectorAll(".pay-content").forEach(c => c.classList.remove("active"));
-        
         tab.classList.add("active");
-        const targetId = tab.dataset.tab;
-        document.getElementById(targetId).classList.add("active");
+        document.getElementById(tab.dataset.tab).classList.add("active");
       });
     });
 
-    // Toast Utility
     window.showToast = function(message) {
       toast.textContent = message;
       toast.classList.add("show");
@@ -1142,311 +1075,274 @@
       try {
         await navigator.clipboard.writeText(text);
         showToast("Copied to clipboard");
-      } catch (err) {
+      } catch (e) {
         showToast("Failed to copy");
       }
     };
 
-    // Run Scan Action
-    btnScan.addEventListener("click", async () => {
-      const targetRepo = repoUrlInput.value.trim();
+    window.copyTextSelector = function(selector) {
+      const el = document.querySelector(selector);
+      copyText(el.value);
+    };
+
+    // Hatch Trigger
+    btnHatch.addEventListener("click", async () => {
+      const username = usernameInput.value.trim();
       const token = patTokenInput.value.trim();
-      
-      if (!targetRepo) {
-        alert("Please enter a GitHub repository owner/name or URL.");
+
+      if (!username) {
+        alert("Please enter a GitHub username.");
         return;
       }
 
-      // Reset dashboard
       dashboard.classList.remove("visible");
-      scannerLogs.classList.add("visible");
-      scannerLogs.innerHTML = "";
-      btnScan.disabled = true;
-      btnScan.textContent = "Scanning...";
+      logsConsole.classList.add("visible");
+      logsConsole.innerHTML = "";
+      btnHatch.disabled = true;
+      btnHatch.textContent = "Hatching...";
 
       function appendLog(message, isSuccess = false, isError = false) {
         const line = document.createElement("div");
         line.className = "log-line" + (isSuccess ? " success" : "") + (isError ? " error" : "");
-        
         const dot = document.createElement("span");
         if (!isSuccess && !isError) {
           dot.className = "log-spinner";
         } else {
           dot.textContent = isSuccess ? "✓" : "✗";
         }
-        
         const text = document.createElement("span");
         text.textContent = message;
-        
         line.appendChild(dot);
         line.appendChild(text);
-        scannerLogs.appendChild(line);
-        scannerLogs.scrollTop = scannerLogs.scrollHeight;
+        logsConsole.appendChild(line);
+        logsConsole.scrollTop = logsConsole.scrollHeight;
       }
 
       try {
-        const report = await runRepoScan(targetRepo, token, (msg) => {
-          // Convert current loaders to checkmarks before starting new line
-          const loaders = scannerLogs.querySelectorAll(".log-spinner");
-          loaders.forEach(l => {
-            l.className = "";
-            l.textContent = "✓";
-            l.parentElement.classList.add("success");
+        const data = await fetchGotchiData(username, token, (msg) => {
+          const spinners = logsConsole.querySelectorAll(".log-spinner");
+          spinners.forEach(s => {
+            s.className = "";
+            s.textContent = "✓";
+            s.parentElement.classList.add("success");
           });
           appendLog(msg);
         });
 
-        // Mark last loader as completed
-        const loaders = scannerLogs.querySelectorAll(".log-spinner");
-        loaders.forEach(l => {
-          l.className = "";
-          l.textContent = "✓";
-          l.parentElement.classList.add("success");
+        // Mark spinners done
+        logsConsole.querySelectorAll(".log-spinner").forEach(s => {
+          s.className = "";
+          s.textContent = "✓";
+          s.parentElement.classList.add("success");
         });
+        appendLog("Hatching complete!", true);
 
-        currentScanReport = report;
-        renderReport(report);
+        // Calculate gotchi values
+        const state = computeGotchiState(data, username);
+        currentGotchiState = state;
         
-        // Hide logs with transition delay
+        // Refresh wardrobe selection to match unlocked status
+        updateWardrobeOptions(username);
+        
+        renderGotchi(state);
+
         setTimeout(() => {
-          scannerLogs.classList.remove("visible");
+          logsConsole.classList.remove("visible");
         }, 1500);
 
       } catch (error) {
         console.error(error);
         appendLog(error.message, false, true);
       } finally {
-        btnScan.disabled = false;
-        btnScan.textContent = "Scan Repository";
+        btnHatch.disabled = false;
+        btnHatch.textContent = "Hatch Gotchi";
       }
     });
 
-    // Render Scanned Report
-    function renderReport(report) {
-      // 1. Check if the repo is unlocked
-      const repoKey = report.repo.toLowerCase();
-      const isUnlocked = localStorage.getItem(`reposec_unlocked_${repoKey}`) === "true";
+    // Update buttons in dressing room based on lock status
+    function updateWardrobeOptions(username) {
+      const isUnlocked = localStorage.getItem(`reposec_unlocked_${username.toLowerCase()}`) === "true";
       
-      // 2. Render Score Circle
-      scoreText.textContent = report.score;
-      
-      // Circular gauge animation offset
-      const circumference = 2 * Math.PI * 65; // ~408.4
-      const percent = report.score;
-      const offset = circumference - (percent / 100) * circumference;
-      gaugeFill.style.strokeDashoffset = offset;
-      
-      // Set label
-      if (report.score >= 90) {
-        scoreLabel.textContent = "Secure";
-        gaugeFill.style.stroke = "#059669"; // Emerald
-      } else if (report.score >= 70) {
-        scoreLabel.textContent = "Moderate Risk";
-        gaugeFill.style.stroke = "#d97706"; // Yellow/Orange
-      } else {
-        scoreLabel.textContent = "Vulnerable";
-        gaugeFill.style.stroke = "#dc2626"; // Red
-      }
-
-      // 3. Render Metadata
-      metaRepo.textContent = report.repo;
-      metaTime.textContent = report.scannedAt;
-      metaScope.textContent = patTokenInput.value.trim() ? "Private & Public" : "Public only";
-
-      // 4. Render Priority Actions
-      priorityList.innerHTML = "";
-      if (report.priorityFixes.length > 0 && report.findings.length > 0) {
-        priorityCard.style.display = "block";
-        report.priorityFixes.forEach(fix => {
-          const li = document.createElement("li");
-          li.className = "priority-item";
-          li.textContent = fix;
-          priorityList.appendChild(li);
-        });
-      } else {
-        priorityCard.style.display = "none";
-      }
-
-      // 5. Render Findings
-      findingsWrapper.innerHTML = "";
-      
-      if (report.findings.length === 0) {
-        findingsWrapper.innerHTML = `
-          <div class="finding-panel low" style="padding: 24px; text-align: center; border-left: 4px solid var(--accent-green)">
-            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Clean Audit Report</h3>
-            <p style="color: var(--text-muted); font-size: 14.5px;">No active vulnerabilities or repository hygiene issues were found during the passive check. Your repository follows security best practices!</p>
-          </div>
-        `;
-        paywallOverlay.style.display = "none";
-        unlockedActions.style.display = "none";
-      } else {
-        report.findings.forEach((finding, index) => {
-          const panel = document.createElement("article");
-          panel.className = `finding-panel ${finding.risk.toLowerCase()}`;
-          
-          // Header (always visible)
-          const header = document.createElement("header");
-          header.className = "finding-header";
-          
-          const titleGroup = document.createElement("div");
-          titleGroup.className = "finding-title-group";
-          titleGroup.innerHTML = `
-            <span class="badge ${finding.risk.toLowerCase()}">${finding.risk}</span>
-            <span class="finding-title">${index + 1}. ${finding.title}</span>
-          `;
-          
-          const catTag = document.createElement("span");
-          catTag.className = "badge";
-          catTag.style.backgroundColor = "var(--bg-tertiary)";
-          catTag.style.color = "var(--text-muted)";
-          catTag.textContent = finding.category;
-          
-          header.appendChild(titleGroup);
-          header.appendChild(catTag);
-          panel.appendChild(header);
-
-          // Details Body (Blurred if locked)
-          const body = document.createElement("div");
-          body.className = "finding-body" + (isUnlocked ? "" : " paywalled");
-          
-          // Description
-          const desc = document.createElement("p");
-          desc.className = "finding-desc";
-          desc.textContent = finding.why;
-          body.appendChild(desc);
-          
-          // Evidence Code
-          const evTitle = document.createElement("h4");
-          evTitle.className = "finding-section-title";
-          evTitle.textContent = "Evidence Checked";
-          body.appendChild(evTitle);
-          
-          const evCode = document.createElement("pre");
-          evCode.className = "finding-evidence";
-          evCode.textContent = Array.isArray(finding.evidence) ? finding.evidence.join("\n") : finding.evidence;
-          body.appendChild(evCode);
-          
-          // Actionable Fix
-          const fixTitle = document.createElement("h4");
-          fixTitle.className = "finding-section-title";
-          fixTitle.textContent = "Step-By-Step Solution";
-          body.appendChild(fixTitle);
-          
-          const fixBox = document.createElement("div");
-          fixBox.className = "finding-fix";
-          fixBox.textContent = finding.fix;
-          body.appendChild(fixBox);
-
-          panel.appendChild(body);
-          findingsWrapper.appendChild(panel);
-        });
-
-        // Toggle Paywall overlays based on locked status
-        if (isUnlocked) {
-          paywallOverlay.style.display = "none";
-          unlockedActions.classList.add("visible");
+      document.querySelectorAll(".btn-item").forEach(btn => {
+        const isDefault = btn.dataset.acc === "none" || btn.dataset.hold === "none" || btn.dataset.skin === "default";
+        
+        if (isUnlocked || isDefault) {
+          btn.classList.remove("locked");
         } else {
+          btn.classList.add("locked");
+        }
+      });
+    }
+
+    // Render Gotchi Graphics & Integration Codes
+    function renderGotchi(state) {
+      const usernameKey = state.username.toLowerCase();
+      const isUnlocked = localStorage.getItem(`reposec_unlocked_${usernameKey}`) === "true";
+
+      // 1. Compile accessories list
+      const activeAccessories = [];
+      if (selectedAcc !== "none") activeAccessories.push(selectedAcc);
+      if (selectedHold !== "none") activeAccessories.push(selectedHold);
+
+      // 2. Render SVG Pet into cages
+      const svgCode = generateGotchiSVG(state.username, state.type, state.status, state.level, activeAccessories, selectedSkin);
+      cageViewport.innerHTML = svgCode;
+
+      // 3. Stats display
+      labelXp.textContent = `Level ${state.level} (${state.xp} XP total)`;
+      barXp.style.width = `${state.progressPercent}%`;
+      
+      // Health state name
+      let healthStatus = "Healthy";
+      if (state.status === "deceased") healthStatus = "Deceased (Ghost)";
+      else if (state.status === "sick") healthStatus = "Sick (Needs commits)";
+      else if (state.status === "repose") healthStatus = "Sleeping (Repose)";
+      
+      labelHealth.textContent = `${state.health}% (${healthStatus})`;
+      barHealth.style.width = `${state.health}%`;
+
+      pillStreak.textContent = state.streak;
+      pillCommits.textContent = state.commits;
+
+      // 4. Render Integration Codes
+      const accessoriesParam = activeAccessories.join(",");
+      const apiBadgeUrl = `https://api.reposec.site/gotchi?user=${state.username}&skin=${selectedSkin}&acc=${accessoriesParam}`;
+      
+      codeMarkdown.value = `[![RepoGotchi](${apiBadgeUrl})](https://reposec.site)`;
+      
+      codeYaml.value = `name: Update RepoGotchi
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Auto-feeds your pet twice a day
+  workflow_dispatch:
+
+jobs:
+  update-gotchi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Latest Gotchi SVG
+        run: |
+          curl -s "${apiBadgeUrl}" > repogotchi.svg
+      - name: Commit & Push Streak
+        run: |
+          git config --global user.name "repogotchi-bot"
+          git config --global user.email "bot@reposec.site"
+          git add repogotchi.svg
+          git commit -m "chore: feed repogotchi pet" || exit 0
+          git push`;
+
+      // 5. Manage Paywalls
+      if (isUnlocked) {
+        paywallOverlay.style.display = "none";
+        integrationWrapper.classList.remove("paywalled");
+      } else {
+        // If they have selected premium items, show paywall card
+        const isUsingPremium = selectedSkin !== "default" || selectedAcc !== "none" || selectedHold !== "none";
+        if (isUsingPremium) {
           paywallOverlay.style.display = "flex";
-          unlockedActions.classList.remove("visible");
+          integrationWrapper.classList.add("paywalled");
+        } else {
+          paywallOverlay.style.display = "none";
+          integrationWrapper.classList.remove("paywalled");
         }
       }
 
       dashboard.classList.add("visible");
-      
-      // Auto scroll to results
-      dashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    // Wardrobe Item Interaction handlers
+    document.querySelectorAll(".btn-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (!currentGotchiState) return;
+
+        const usernameKey = currentGotchiState.username.toLowerCase();
+        const isUnlocked = localStorage.getItem(`reposec_unlocked_${usernameKey}`) === "true";
+        const isLocked = btn.classList.contains("locked");
+
+        if (isLocked && !isUnlocked) {
+          // Open payment modal
+          paywallOverlay.style.display = "flex";
+          integrationWrapper.classList.add("paywalled");
+          
+          // Auto scroll to checkout card
+          paywallOverlay.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+
+        // Toggle active selection states
+        if (btn.dataset.acc !== undefined) {
+          document.querySelectorAll("[data-acc]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedAcc = btn.dataset.acc;
+        } else if (btn.dataset.hold !== undefined) {
+          document.querySelectorAll("[data-hold]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedHold = btn.dataset.hold;
+        } else if (btn.dataset.skin !== undefined) {
+          document.querySelectorAll("[data-skin]").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedSkin = btn.dataset.skin;
+        }
+
+        renderGotchi(currentGotchiState);
+      });
+    });
 
     // UPI Unlock Handler
     btnUnlockUpi.addEventListener("click", () => {
-      const utr = upiRefInput.value.trim();
+      const utr = upiRef.value.trim();
       if (!/^\d{12}$/.test(utr)) {
-        alert("Please enter a valid 12-digit UPI Transaction Ref ID / UTR Number.");
+        alert("Please enter a valid 12-digit UPI transaction UTR code.");
         return;
       }
-      
-      if (currentScanReport) {
-        const repoKey = currentScanReport.repo.toLowerCase();
-        localStorage.setItem(`reposec_unlocked_${repoKey}`, "true");
-        localStorage.setItem(`reposec_upi_utr_${repoKey}`, utr);
-        showToast("Payment verified. Report unlocked!");
-        renderReport(currentScanReport);
+
+      if (currentGotchiState) {
+        const usernameKey = currentGotchiState.username.toLowerCase();
+        localStorage.setItem(`reposec_unlocked_${usernameKey}`, "true");
+        localStorage.setItem(`reposec_upi_utr_${usernameKey}`, utr);
+        showToast("Payment verified. Wardrobe & Badge unlocked!");
+        
+        updateWardrobeOptions(currentGotchiState.username);
+        renderGotchi(currentGotchiState);
       }
     });
 
-    // Gumroad/LemonSqueezy Checkout Trigger
+    // Checkout Redirect links
     btnCheckoutTrigger.addEventListener("click", () => {
-      if (!currentScanReport) return;
+      if (!currentGotchiState) return;
+      const username = currentGotchiState.username;
       
-      const repoUrl = currentScanReport.repo;
-      // Setup external payment checkout URL passing current repo URL as query param
-      // Once purchase is completed, Lemon Squeezy redirects back to:
-      // https://reposec.site/?unlock=true&repo=owner/repo
-      const paymentUrl = `https://sajidofaspire.lemonsqueezy.com/checkout/buy/reposec-mini-audit?media=0&checkout[custom][repo]=${encodeURIComponent(repoUrl)}&checkout[redirect_url]=${encodeURIComponent(window.location.origin + window.location.pathname + '?unlock=true&repo=' + repoUrl)}`;
-      
+      const paymentUrl = `https://sajidofaspire.lemonsqueezy.com/checkout/buy/reposec-gotchi-pro?media=0&checkout[custom][user]=${encodeURIComponent(username)}&checkout[redirect_url]=${encodeURIComponent(window.location.origin + window.location.pathname + '?unlock=true&repo=' + username)}`;
       window.location.href = paymentUrl;
     });
 
-    // Simulated Checkout (Sandbox Bypass for Testing)
+    // Sandbox unlock
     btnSimulateCheckout.addEventListener("click", () => {
-      if (!currentScanReport) return;
-      const repoUrl = currentScanReport.repo;
-      window.location.href = `${window.location.origin}${window.location.pathname}?unlock=true&repo=${repoUrl}`;
+      if (!currentGotchiState) return;
+      const username = currentGotchiState.username;
+      window.location.href = `${window.location.origin}${window.location.pathname}?unlock=true&repo=${username}`;
     });
 
-    // Report Actions (Markdown copy)
-    document.getElementById("btn-copy-md").addEventListener("click", () => {
-      if (!currentScanReport) return;
-      
-      const rep = currentScanReport;
-      let md = `# RepoSec Scan Report for ${rep.repo}\n`;
-      md += `Date: ${rep.scannedAt} | Security Score: ${rep.score}/100\n\n`;
-      
-      md += `## Evidence Audited\n`;
-      rep.evidence.forEach(ev => { md += `- ${ev.replace(/\*\*/g, '')}\n`; });
-      md += `\n`;
-      
-      md += `## Findings & Hardening Recommendations\n\n`;
-      rep.findings.forEach((finding, idx) => {
-        md += `### ${idx + 1}. ${finding.title} [Risk: ${finding.risk}]\n`;
-        md += `- **Category**: ${finding.category}\n`;
-        md += `- **Why**: ${finding.why}\n`;
-        md += `- **Evidence Checked**:\n\`\`\`\n${Array.isArray(finding.evidence) ? finding.evidence.join('\n') : finding.evidence}\n\`\`\`\n`;
-        md += `- **Fix Instructions**: ${finding.fix}\n\n`;
-      });
-      
-      copyText(md);
-    });
+    // URL Query trigger parsing
+    function checkMountRedirect() {
+      const params = new URLSearchParams(window.location.search);
+      const unlockParam = params.get('unlock');
+      const repoParam = params.get('repo'); // contains username in this pivot
 
-    // Report Actions (Print PDF)
-    document.getElementById("btn-print").addEventListener("click", () => {
-      window.print();
-    });
-
-    // Check for success redirects on mount
-    function checkUnlockRedirect() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const unlockParam = urlParams.get('unlock');
-      const repoParam = urlParams.get('repo');
-      
       if (unlockParam === 'true' && repoParam) {
-        const cleanRepo = repoParam.trim().toLowerCase();
-        localStorage.setItem(`reposec_unlocked_${cleanRepo}`, "true");
-        
-        // Populate inputs
-        repoUrlInput.value = repoParam;
-        
-        // Clean URL parameters cleanly so refreshing doesn't re-trigger
+        const cleanUser = repoParam.trim().toLowerCase();
+        localStorage.setItem(`reposec_unlocked_${cleanUser}`, "true");
+
+        usernameInput.value = repoParam;
         window.history.replaceState({}, document.title, window.location.pathname);
         
-        // Trigger automated scan execution for the user
-        showToast("Purchase successful! Executing scan...");
-        btnScan.click();
+        showToast("Hatching your unlocked RepoGotchi...");
+        btnHatch.click();
       }
     }
-    
-    // Auto-run mount check
-    checkUnlockRedirect();
+
+    checkMountRedirect();
   </script>
 </body>
 </html>
