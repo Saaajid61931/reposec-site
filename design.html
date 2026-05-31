@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sajid Design Desk - Posters and Presentations</title>
+  <meta name="description" content="Fast poster, presentation, and social graphic design help from Sajid. INR 499 direct UPI after preview.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #526071;
+      --paper: #fffdfa;
+      --surface: #ffffff;
+      --line: #d7dde5;
+      --teal: #047064;
+      --teal-soft: #e8f7f4;
+      --coral: #dc5f45;
+      --yellow: #f3c94d;
+      --blue: #2459a6;
+      --shadow: 0 18px 48px rgba(17, 24, 39, 0.1);
+      --radius: 8px;
+      --font-display: "Outfit", "Inter", sans-serif;
+      --font-body: "Inter", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 253, 250, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar .wrap {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .nav a:hover {
+      color: var(--ink);
+    }
+
+    main {
+      padding: 40px 0 72px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .brief-panel,
+    .sample-panel,
+    .offer-band,
+    .proof-grid > section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .brief-panel {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 3px;
+      background: var(--coral);
+      border-radius: 999px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      letter-spacing: 0;
+      line-height: 1.05;
+    }
+
+    h1 {
+      max-width: 620px;
+      font-size: clamp(34px, 7vw, 64px);
+      font-weight: 800;
+    }
+
+    .lead {
+      max-width: 640px;
+      margin: 16px 0 24px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .price-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-weight: 800;
+      background: #fff;
+    }
+
+    .pill.price {
+      background: var(--yellow);
+    }
+
+    .brief-builder {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    select,
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 13px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-soft);
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    button,
+    .button {
+      display: inline-flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      padding: 0 16px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button.secondary,
+    .button.secondary {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .sample-panel {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .sample-header {
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sample-header h2 {
+      font-size: 24px;
+    }
+
+    .sample-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .sample-image {
+      width: 100%;
+      flex: 1;
+      min-height: 360px;
+      object-fit: cover;
+      object-position: top left;
+      display: block;
+      background: #edf4f8;
+    }
+
+    .offer-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .offer-item {
+      padding: 20px;
+      border-right: 1px solid var(--line);
+    }
+
+    .offer-item:last-child {
+      border-right: 0;
+    }
+
+    .offer-item strong {
+      display: block;
+      margin-bottom: 7px;
+      font-family: var(--font-display);
+      font-size: 18px;
+    }
+
+    .offer-item span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .proof-grid > section {
+      padding: 22px;
+      box-shadow: none;
+    }
+
+    .proof-grid h2 {
+      margin-bottom: 12px;
+      font-size: 26px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 19px;
+      color: var(--muted);
+    }
+
+    .list li {
+      margin: 8px 0;
+    }
+
+    .payment-box {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      background: var(--teal-soft);
+    }
+
+    .upi-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--teal);
+      font-weight: 900;
+    }
+
+    .payment-box code {
+      display: inline-block;
+      margin-top: 5px;
+      color: var(--teal);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      max-width: calc(100% - 36px);
+      padding: 12px 14px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 880px) {
+      .intro,
+      .proof-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .offer-band {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .offer-item:nth-child(2) {
+        border-right: 0;
+      }
+
+      .offer-item:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .topbar .wrap {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .nav {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      main {
+        padding-top: 22px;
+      }
+
+      .brief-panel {
+        padding: 20px;
+      }
+
+      .field-grid,
+      .offer-band {
+        grid-template-columns: 1fr;
+      }
+
+      .offer-item,
+      .offer-item:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .offer-item:last-child {
+        border-bottom: 0;
+      }
+
+      .sample-image {
+        min-height: 260px;
+      }
+
+      .payment-box {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href="design.html">Sajid Design Desk</a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="index.html">RepoGotchi</a>
+          <a href="request.html">Repo Audit</a>
+          <a href="#payment">Payment</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="intro">
+        <section class="brief-panel" aria-labelledby="design-title">
+          <div class="eyebrow">Fast design help</div>
+          <h1 id="design-title">Posters, presentations, and social graphics without the agency price.</h1>
+          <p class="lead">Send a clear brief. I will make a useful first preview, then you pay only if the direction is acceptable. Best for simple business, event, creator, student, and portfolio designs.</p>
+
+          <div class="price-row" aria-label="Offer highlights">
+            <span class="pill price">INR 499</span>
+            <span class="pill">Pay after preview</span>
+            <span class="pill">UPI direct</span>
+          </div>
+
+          <form class="brief-builder" id="brief-form">
+            <div class="field-grid">
+              <label>
+                Design type
+                <select id="design-type">
+                  <option>Poster or flyer</option>
+                  <option>Presentation cleanup</option>
+                  <option>Social media graphic</option>
+                  <option>Thumbnail or banner</option>
+                  <option>Simple brand kit</option>
+                </select>
+              </label>
+              <label>
+                Deadline
+                <select id="deadline">
+                  <option>24 hours</option>
+                  <option>48 hours</option>
+                  <option>3-5 days</option>
+                  <option>Flexible</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Brand or project name
+              <input id="project-name" type="text" placeholder="Example: Aspire Coaching Workshop">
+            </label>
+
+            <label>
+              What should the design say?
+              <textarea id="brief-details" placeholder="Paste the text, size, audience, colors, examples you like, and where it will be posted."></textarea>
+            </label>
+
+            <div class="actions">
+              <button type="button" id="copy-brief">Copy brief</button>
+              <a class="button secondary" id="github-brief" href="https://github.com/Saaajid61931/reposec-site/issues/new" target="_blank" rel="noopener">Open GitHub brief</a>
+            </div>
+          </form>
+        </section>
+
+        <aside class="sample-panel" aria-labelledby="sample-title">
+          <div class="sample-header">
+            <h2 id="sample-title">Sample style</h2>
+            <p>Clean, direct, readable design for selling a small service or explaining an offer.</p>
+          </div>
+          <img class="sample-image" src="repo-security-499-share-card.png" alt="Sample service poster designed for a repo security mini audit">
+        </aside>
+      </div>
+
+      <section class="offer-band" aria-label="What is included">
+        <div class="offer-item">
+          <strong>Poster</strong>
+          <span>One clean poster or flyer for events, offers, classes, launches, or local services.</span>
+        </div>
+        <div class="offer-item">
+          <strong>Presentation</strong>
+          <span>Improve layout, spacing, hierarchy, and readability for up to five slides.</span>
+        </div>
+        <div class="offer-item">
+          <strong>Social post</strong>
+          <span>One Instagram, LinkedIn, WhatsApp, or YouTube community graphic.</span>
+        </div>
+        <div class="offer-item">
+          <strong>Delivery</strong>
+          <span>PNG/JPG export plus an editable Canva-style layout when possible.</span>
+        </div>
+      </section>
+
+      <div class="proof-grid">
+        <section>
+          <h2>Good Fit</h2>
+          <ul class="list">
+            <li>Small businesses that need one clear promotional graphic.</li>
+            <li>Creators who need a readable social post or thumbnail.</li>
+            <li>Students or freelancers who need a cleaner presentation.</li>
+            <li>Anyone who wants a simple, practical design without a long process.</li>
+          </ul>
+        </section>
+
+        <section id="payment">
+          <h2>Payment</h2>
+          <p class="lead" style="margin-bottom: 10px;">For Indian/direct clients: pay INR 499 only after the first preview is useful. International clients should use the official platform payout flow where the job is posted.</p>
+          <div class="payment-box">
+            <div class="upi-mark">UPI</div>
+            <div>
+              <strong>UPI ID</strong><br>
+              <code>sajidofaspire@oksbi</code>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Brief copied</div>
+
+  <script>
+    const designType = document.getElementById("design-type");
+    const deadline = document.getElementById("deadline");
+    const projectName = document.getElementById("project-name");
+    const briefDetails = document.getElementById("brief-details");
+    const copyBrief = document.getElementById("copy-brief");
+    const githubBrief = document.getElementById("github-brief");
+    const toast = document.getElementById("toast");
+
+    function buildBrief() {
+      const project = projectName.value.trim() || "New design request";
+      const details = briefDetails.value.trim() || "I need help turning my rough idea/text into a clean design.";
+
+      return [
+        "Design request for Sajid",
+        "",
+        "Project: " + project,
+        "Design type: " + designType.value,
+        "Deadline: " + deadline.value,
+        "",
+        "Brief:",
+        details,
+        "",
+        "Payment: INR 499 by UPI after a useful first preview is accepted.",
+        "UPI: sajidofaspire@oksbi"
+      ].join("\n");
+    }
+
+    function updateGithubLink() {
+      const title = encodeURIComponent("Design brief: " + (projectName.value.trim() || designType.value));
+      const body = encodeURIComponent(buildBrief());
+      githubBrief.href = "https://github.com/Saaajid61931/reposec-site/issues/new?title=" + title + "&body=" + body;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1900);
+    }
+
+    copyBrief.addEventListener("click", async () => {
+      updateGithubLink();
+      try {
+        await navigator.clipboard.writeText(buildBrief());
+        showToast("Brief copied");
+      } catch (error) {
+        showToast("Copy failed");
+      }
+    });
+
+    [designType, deadline, projectName, briefDetails].forEach((input) => {
+      input.addEventListener("input", updateGithubLink);
+    });
+
+    updateGithubLink();
+  </script>
+</body>
+</html>
