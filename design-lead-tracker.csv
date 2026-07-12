@@ -1,0 +1,11 @@
+id,segment,channel,name_or_handle,status,next_action,payment_status,notes
+1,past client,whatsapp,,not_sent,send past-client message,not_received,
+2,local business owner,whatsapp,,not_sent,send best first message,not_received,
+3,student with presentation,whatsapp,,not_sent,send best first message,not_received,
+4,creator,instagram_dm,,not_sent,send best first message,not_received,
+5,freelancer,linkedin,,not_sent,send best first message,not_received,
+6,coach or tutor,whatsapp,,not_sent,send past-client message,not_received,
+7,college club admin,whatsapp,,not_sent,ask permission before posting,not_received,
+8,local service owner,whatsapp,,not_sent,send best first message,not_received,
+9,startup founder,linkedin,,not_sent,send best first message,not_received,
+10,permitted community group,group_post,,not_sent,post permission-safe version,not_received,
