@@ -1,0 +1,66 @@
+# RepoSec's pinned, locally reviewed Semgrep policy.
+# The rules use Semgrep Community Edition syntax and complement the deterministic
+# RepoSec rules. No remote rule configuration is fetched while a customer scan runs.
+rules:
+  - id: reposec.javascript.child-process-shell
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: User-controlled data may reach a shell command.
+    patterns:
+      - pattern-either:
+          - pattern: exec($CMD, ...)
+          - pattern: execSync($CMD, ...)
+          - pattern: |
+              spawn($CMD, $ARGS, { ..., shell: true, ... })
+      - pattern-not: exec("...", ...)
+      - pattern-not: execSync("...", ...)
+
+  - id: reposec.javascript.cors-wildcard-credentials
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Wildcard CORS appears alongside credentialed requests.
+    patterns:
+      - pattern-either:
+          - pattern: |
+              cors({..., origin: "*", credentials: true, ...})
+          - pattern: |
+              $RES.setHeader("Access-Control-Allow-Origin", "*");
+              ...
+              $RES.setHeader("Access-Control-Allow-Credentials", "true");
+
+  - id: reposec.javascript.stripe-webhook-unverified-json
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: A Stripe webhook route parses JSON; verify the raw signed body first.
+    patterns:
+      - pattern: await $REQ.json()
+      - pattern-inside: |
+          $STRIPE = ...
+          ...
+
+  - id: reposec.javascript.dynamic-database-admin-check
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: A client-provided admin or role value appears to control authorization.
+    pattern-either:
+      - pattern: if ($REQ.body.admin) { ... }
+      - pattern: if ($BODY.role === "admin") { ... }
+      - pattern: if ($PARAMS.isAdmin) { ... }
+
+  - id: reposec.python.subprocess-shell
+    languages: [python]
+    severity: ERROR
+    message: Subprocess shell execution needs strict review.
+    patterns:
+      - pattern-either:
+          - pattern: subprocess.run($CMD, ..., shell=True, ...)
+          - pattern: subprocess.Popen($CMD, ..., shell=True, ...)
+          - pattern: os.system($CMD)
+
+  - id: reposec.python.debug-production
+    languages: [python]
+    severity: WARNING
+    message: Debug mode appears to be enabled.
+    pattern-either:
+      - pattern: $APP.run(..., debug=True, ...)
+      - pattern: DEBUG = True

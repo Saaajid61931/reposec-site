@@ -1,0 +1,254 @@
+Finish production validation and deployment preparation for the existing RepoSec project.
+
+Important constraints:
+
+- Continue from the current implementation.
+- Do not rebuild the project from scratch.
+- Do not restore the intentionally deleted legacy site.
+- Do not add new product features.
+- Preserve the current security model.
+- Never execute scanned repository code.
+- Never persist repository source files, archive contents, or raw secrets.
+
+First inspect:
+
+- git status
+- repository structure
+- package.json files
+- npm workspace configuration
+- environment templates
+- Supabase migrations
+- worker Dockerfile
+- Docker Compose configuration
+- CI workflows
+- existing validation documentation
+
+Complete the following work:
+
+1. Dependencies and lockfile
+
+- Configure npm to use a working public or approved registry.
+- Install all root and worker dependencies.
+- Generate one committed root package-lock.json for the npm workspace.
+- Confirm npm ci works from a clean checkout.
+- Remove duplicate, unused, or conflicting dependencies only when proven unnecessary.
+- Do not replace major frameworks or libraries.
+
+2. Run and fix all validation
+
+Run:
+
+- npm run preflight
+- npm run typecheck
+- npm run lint
+- npm run build
+- npm run worker:build
+- npm run check
+- npm audit, report findings without making unsafe major-version upgrades
+
+Resolve every TypeScript, ESLint, Next.js, import, workspace, build, and worker error.
+
+Do not silence valid errors with broad:
+
+- any
+- ts-ignore
+- eslint-disable
+- skipLibCheck changes
+- disabled build checks
+
+Use narrow fixes where an external library has incomplete typing.
+
+3. Docker validation
+
+If Docker is available, run:
+
+- docker compose config
+- docker compose build --pull scanner-worker
+- docker compose up scanner-worker or an equivalent smoke test
+- inspect the worker health endpoint
+- verify graceful shutdown
+- verify temporary scan directories are removed after success, failure, and timeout
+
+Confirm the image contains all required scanner tools and that their versions are pinned or reproducible.
+
+Confirm Semgrep rules validate during the image build.
+
+4. Database validation
+
+- Review all Supabase migrations in order.
+- Apply them to a fresh local or test Supabase database.
+- Confirm all tables, indexes, constraints, enums, triggers, RPC functions, and RLS policies are created successfully.
+- Confirm scan component names match across migrations, worker code, web code, and UI.
+- Test webhook attempt counting for concurrent deliveries.
+- Test scan claim, retry, rescan, regression, and immutable evidence behavior.
+- Confirm incomplete scans do not resolve unseen findings.
+- Confirm complete scans use only valid complete baselines for regression detection.
+
+Do not modify an already-applied migration unless this is still a private unreleased database. Otherwise create a new corrective migration.
+
+5. End-to-end smoke tests
+
+Test these flows against local or staging services:
+
+- user signup and login
+- Supabase session cookie refresh through the Next.js proxy
+- project creation
+- GitHub setup with an empty or missing project ID
+- GitHub App installation
+- GitHub push webhook
+- duplicate webhook delivery
+- scan job creation
+- exact commit SHA capture
+- worker job polling
+- repository archive download without executing repository code
+- component timeouts
+- passive deployed-site checks
+- redirect-safe SSRF rejection
+- finding deduplication
+- verdict generation
+- signed worker notification to the web app
+- scan persistence
+- rescan creation
+- regression detection
+- email delivery event processing
+- worker restart during a scan
+- failed scan retry
+
+Use safe test repositories. Do not scan untrusted private production repositories during validation.
+
+6. External service configuration
+
+Prepare a final checklist for:
+
+Supabase:
+
+- project URL
+- anon key
+- service-role key
+- database migrations
+- auth redirect URLs
+- production site URL
+- RLS verification
+
+GitHub:
+
+- OAuth app client ID and secret
+- GitHub App ID
+- private key
+- webhook secret
+- callback URL
+- setup URL
+- webhook URL
+- required read-only permissions
+- push and installation event subscriptions
+
+Stripe:
+
+- secret key
+- publishable key
+- price IDs
+- webhook endpoint
+- webhook signing secret
+- production mode configuration
+
+Resend:
+
+- API key
+- verified sending domain
+- sender address
+- webhook endpoint
+- webhook signing secret
+
+Worker:
+
+- Supabase URL
+- service-role key
+- worker signing secret
+- web notification URL
+- scan timeout settings
+- polling interval
+- temporary workspace path
+- outbound network policy
+- memory and CPU limits
+
+Application:
+
+- public app URL
+- internal worker URL where applicable
+- encryption and signing secrets
+- Sentry configuration
+- production cookie settings
+- rate limiting
+- logging and retention settings
+
+Never place service-role credentials or private keys in public Next.js environment variables.
+
+7. Documentation
+
+Update the existing documentation so it matches the verified implementation:
+
+- README.md
+- docs/DEPLOYMENT.md
+- docs/OPERATIONS.md
+- docs/SECURITY-MODEL.md
+- docs/VALIDATION.md
+- .env.example
+- worker environment example
+
+Include:
+
+- exact installation commands
+- exact migration order
+- local development steps
+- production deployment steps
+- required webhook URLs
+- required GitHub App permissions
+- worker resource requirements
+- failure recovery steps
+- rollback steps
+- log locations
+- health-check endpoints
+- secret rotation procedure
+
+8. Repository cleanup
+
+- Remove generated build artifacts, temporary files, test archives, and local secrets.
+- Ensure .gitignore retains required environment templates.
+- Confirm git diff contains no source archives, credentials, tokens, private keys, or raw scan evidence.
+- Confirm no TODO, FIXME, placeholder, or mock production implementation remains.
+- Do not commit node_modules.
+- Do not restore deleted legacy files.
+
+9. Final acceptance criteria
+
+The work is complete only when:
+
+- npm ci succeeds from a clean checkout
+- a root package-lock.json exists
+- TypeScript passes
+- ESLint passes
+- Next.js production build passes
+- worker production build passes
+- Docker Compose configuration validates
+- worker Docker image builds, when Docker is available
+- migrations apply to a fresh database
+- the core scan flow passes in staging
+- signed notifications are verified
+- webhook retries are idempotent
+- exact commit SHA is persisted
+- no repository code is executed
+- no repository source or raw secrets are retained
+- documentation matches the tested deployment process
+
+Finish with:
+
+1. A concise deployment-readiness status.
+2. A table of every validation command and its result.
+3. A list of remaining external configuration tasks.
+4. A list of changed files.
+5. Any known risks or untested paths.
+6. Exact commands needed to deploy.
+7. Git status.
+8. Links or paths to the most important project files.
+
+Do not claim a validation passed unless you ran it and captured the result.

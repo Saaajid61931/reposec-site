@@ -1,0 +1,12 @@
+.git
+.github
+.next
+node_modules
+worker/node_modules
+worker/dist
+*.log
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+!worker/.env.example
